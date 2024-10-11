@@ -131,7 +131,9 @@
 			"sourceIndexes" : 
 			[
 				1,
-				3
+				3,
+				4,
+				5
 			]
 		}
 	],
@@ -157,6 +159,16 @@
 		{
 			"backtrace" : 1,
 			"path" : "CapstoneTetris/game.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "CapstoneTetris/board/board.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "CapstoneTetris/tetris/tetris.h",
 			"sourceGroupIndex" : 1
 		}
 	],

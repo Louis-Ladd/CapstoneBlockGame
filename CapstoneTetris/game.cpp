@@ -45,23 +45,23 @@ Game::~Game()
 	return;
 }
 
-bool Game::is_running()
+bool Game::GetRunning()
 {
 	return this->running;
 }
 
-void Game::stop_running()
+void Game::SetRunning(bool new_value)
 {
-	this->running = false;
+	this->running = new_value;
 	return;
 }
 
-void update()
+void Game::Update()
 {
 
 }
 
-void render()
+void Game::Render()
 {
 
 }

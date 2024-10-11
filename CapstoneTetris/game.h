@@ -16,9 +16,8 @@ public:
 	SDL_Event window_event;
 	Game(const char *title);
 	~Game();
-	bool is_running();
-	void stop_running();
-	void update();
-	void render();
-
+	bool GetRunning();
+	void SetRunning(bool new_value);
+	void Update();
+	void Render();
 };

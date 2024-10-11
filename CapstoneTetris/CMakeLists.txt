@@ -9,7 +9,7 @@ endif()
 find_package(SDL2 REQUIRED)
 
 # Add source to this project's executable.
-add_executable (CapstoneTetris "main.cpp" "main.h" "game.cpp" "game.h")
+add_executable (CapstoneTetris "main.cpp" "main.h" "game.cpp" "game.h" "board/board.h" "tetris/tetris.h")
 
 target_link_libraries(CapstoneTetris SDL2::SDL2 SDL2::SDL2main)
 

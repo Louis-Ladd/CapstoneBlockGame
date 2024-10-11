@@ -10,7 +10,7 @@ void handle_events(Game& game)
 		switch (game.window_event.type)
 		{
 			case SDL_QUIT:
-				game.stop_running();
+				game.SetRunning(false);
 				break;
 		}
 	}
@@ -26,9 +26,11 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	while (game.is_running())
+	while (game.GetRunning())
 	{
 		std::cout << SDL_GetTicks() << std::endl;
+
+		// TODO: abstract event handler into a proper inputs class
 		handle_events(game);
 	}
 
