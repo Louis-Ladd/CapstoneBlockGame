@@ -1,0 +1,14 @@
+# ninja log v5
+3	608	7503098536832135	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/CapstoneTetris.cpp.obj	eabf5941ecf74ac2
+606	744	7503101482831387	CapstoneTetris/CapstoneTetris.exe	d6a8a4e93f64772a
+4	605	7503101481721392	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/main.cpp.obj	6eacc04991a9b241
+4	897	7503122902882501	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/main.cpp.obj	6eacc04991a9b241
+8	898	7503122902882501	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/game.cpp.obj	5958b9885dfd1a75
+898	1040	7503122904052505	CapstoneTetris/CapstoneTetris.exe	15662a1396a5826d
+15	629	7503126169853459	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/game.cpp.obj	5958b9885dfd1a75
+15	637	7503126332367638	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/main.cpp.obj	6eacc04991a9b241
+638	748	7503126333237663	CapstoneTetris/CapstoneTetris.exe	15662a1396a5826d
+3	642	7503127499542719	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/game.cpp.obj	5958b9885dfd1a75
+642	754	7503127500412731	CapstoneTetris/CapstoneTetris.exe	15662a1396a5826d
+13	621	7503128065142385	CapstoneTetris/CMakeFiles/CapstoneTetris.dir/main.cpp.obj	6eacc04991a9b241
+621	728	7503128065982409	CapstoneTetris/CapstoneTetris.exe	15662a1396a5826d
