@@ -1,0 +1,5 @@
+D:/Programming/cpp/CapstoneTetris/out/build/x64-debug/CMakeFiles/edit_cache.dir
+D:/Programming/cpp/CapstoneTetris/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
+D:/Programming/cpp/CapstoneTetris/out/build/x64-debug/CapstoneTetris/CMakeFiles/CapstoneTetris.dir
+D:/Programming/cpp/CapstoneTetris/out/build/x64-debug/CapstoneTetris/CMakeFiles/edit_cache.dir
+D:/Programming/cpp/CapstoneTetris/out/build/x64-debug/CapstoneTetris/CMakeFiles/rebuild_cache.dir
