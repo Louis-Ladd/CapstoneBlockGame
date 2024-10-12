@@ -20,8 +20,8 @@ void handle_events(Game* game)
 
 int main(int argc, char *argv[])
 {
+	std::cout << "Game starting" << std::endl;
 	Game* game = Game::GetInstance();
-
 
 	if (game->window == nullptr ||
 		game->renderer == nullptr)
