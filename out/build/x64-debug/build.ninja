@@ -93,6 +93,14 @@ build CapstoneTetris\CMakeFiles\CapstoneTetris.dir\game.cpp.obj: CXX_COMPILER__C
   TARGET_COMPILE_PDB = CapstoneTetris\CMakeFiles\CapstoneTetris.dir\
   TARGET_PDB = CapstoneTetris\CapstoneTetris.pdb
 
+build CapstoneTetris\CMakeFiles\CapstoneTetris.dir\tetris\tetris.cpp.obj: CXX_COMPILER__CapstoneTetris_unscanned_Debug D$:\Programming\cpp\CapstoneTetris\CapstoneTetris\tetris\tetris.cpp || cmake_object_order_depends_target_CapstoneTetris
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Ob0 /Od /RTC1 -std:c++20 -ZI
+  INCLUDES = -external:IC:\lib\SDL2-2.30.8\cmake\..\include -external:W0
+  OBJECT_DIR = CapstoneTetris\CMakeFiles\CapstoneTetris.dir
+  OBJECT_FILE_DIR = CapstoneTetris\CMakeFiles\CapstoneTetris.dir\tetris
+  TARGET_COMPILE_PDB = CapstoneTetris\CMakeFiles\CapstoneTetris.dir\
+  TARGET_PDB = CapstoneTetris\CapstoneTetris.pdb
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target CapstoneTetris
@@ -101,7 +109,7 @@ build CapstoneTetris\CMakeFiles\CapstoneTetris.dir\game.cpp.obj: CXX_COMPILER__C
 #############################################
 # Link the executable CapstoneTetris\CapstoneTetris.exe
 
-build CapstoneTetris\CapstoneTetris.exe: CXX_EXECUTABLE_LINKER__CapstoneTetris_Debug CapstoneTetris\CMakeFiles\CapstoneTetris.dir\main.cpp.obj CapstoneTetris\CMakeFiles\CapstoneTetris.dir\game.cpp.obj | C$:\lib\SDL2-2.30.8\cmake\..\lib\x64\SDL2.lib C$:\lib\SDL2-2.30.8\cmake\..\lib\x64\SDL2main.lib
+build CapstoneTetris\CapstoneTetris.exe: CXX_EXECUTABLE_LINKER__CapstoneTetris_Debug CapstoneTetris\CMakeFiles\CapstoneTetris.dir\main.cpp.obj CapstoneTetris\CMakeFiles\CapstoneTetris.dir\game.cpp.obj CapstoneTetris\CMakeFiles\CapstoneTetris.dir\tetris\tetris.cpp.obj | C$:\lib\SDL2-2.30.8\cmake\..\lib\x64\SDL2.lib C$:\lib\SDL2-2.30.8\cmake\..\lib\x64\SDL2main.lib
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Ob0 /Od /RTC1 -ZI
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = C:\lib\SDL2-2.30.8\cmake\..\lib\x64\SDL2.lib  C:\lib\SDL2-2.30.8\cmake\..\lib\x64\SDL2main.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

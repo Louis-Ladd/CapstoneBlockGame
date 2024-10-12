@@ -9,12 +9,21 @@
 class Game
 {
 private:
+	static Game* instance_ptr;
 	bool running = true;
+	Game();
 public:
 	SDL_Renderer *renderer;
 	SDL_Window *window;
 	SDL_Event window_event;
-	Game(const char *title);
+	static Game* GetInstance()
+	{
+		if (instance_ptr == nullptr)
+		{
+			instance_ptr = new Game();
+		}
+		return instance_ptr;
+	}
 	~Game();
 	bool GetRunning();
 	void SetRunning(bool new_value);

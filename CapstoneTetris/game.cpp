@@ -1,7 +1,7 @@
 #include "game.h"
+Game* Game::instance_ptr = nullptr;
 
-
-Game::Game(const char* title)
+Game::Game()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -11,7 +11,7 @@ Game::Game(const char* title)
 		return;
 	}
 
-	this->window = SDL_CreateWindow(title,
+	this->window = SDL_CreateWindow("Tetris",
 									SDL_WINDOWPOS_CENTERED,
 									SDL_WINDOWPOS_CENTERED,
 									SCREEN_HEIGHT, SCREEN_WIDTH, 0);

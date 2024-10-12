@@ -6,5 +6,6 @@
 #include <iostream>
 #include <SDL.h>
 #include "game.h"
+#include "tetris/tetris.h"
 
 // TODO: Reference additional headers your program requires here.
