@@ -23,6 +23,7 @@ private:
 	Tetromino* current_block = nullptr;
 	Tetris();
 	void SetDrawColor(int block_state, SDL_Renderer* renderer);
+
 public:
 	// Singleton
 	static Tetris* GetInstance()

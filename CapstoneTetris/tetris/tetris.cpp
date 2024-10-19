@@ -30,9 +30,6 @@ void Tetris::NextBlock()
 	current_block->position.x = 3;
 }
 
-void Tetris::Update()
-{
-}
 
 
 void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer)
@@ -69,6 +66,9 @@ void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer)
 	}
 }
 
+void Tetris::Update()
+{
+}
 
 void Tetris::Render(SDL_Renderer* renderer)
 {
@@ -104,19 +104,37 @@ void Tetris::Render(SDL_Renderer* renderer)
 	{
 		for (int iy = 0; iy < 4; iy++)
 		{
-			if (current_block->shape[iy][ix] == 0)
+			if (this->current_block->shape[iy][ix] == 0)
 			{ continue; }
 
-			SetDrawColor(current_block->shape[iy][ix], renderer);
-			block.x = (BLOCK_SIZE * ix) + BLOCK_OFFSET_X + current_block->position.x * BLOCK_SIZE;
-			block.y = (BLOCK_SIZE * iy) + BLOCK_OFFSET_Y + current_block->position.y * BLOCK_SIZE;
+			SetDrawColor(this->current_block->shape[iy][ix], renderer);
+			block.x = (BLOCK_SIZE * ix) + BLOCK_OFFSET_X + this->current_block->position.x * BLOCK_SIZE;
+			block.y = (BLOCK_SIZE * iy) + BLOCK_OFFSET_Y + this->current_block->position.y * BLOCK_SIZE;
 			SDL_RenderFillRect(renderer, &block);
 
-			//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-			//SDL_RenderDrawRect(renderer, &block);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+			SDL_RenderDrawRect(renderer, &block);
 		}
 	}
 
+	Tetromino* next_block = this->block_queue.front();
+
+	for (int ix = 0; ix < 4; ix++)
+	{
+		for (int iy = 0; iy < 4; iy++)
+		{
+			if (this->block_queue.front()->shape[iy][ix] == 0)
+			{ continue; }
+			
+			SetDrawColor(next_block->shape[iy][ix], renderer);
+			block.x = (BLOCK_SIZE * ix) + 600;
+			block.y = (BLOCK_SIZE * iy) + 40;
+			SDL_RenderFillRect(renderer, &block);
+
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+			SDL_RenderDrawRect(renderer, &block);
+		}
+	}
 }
 
 int (*Tetris::GetBoard())[BOARD_WIDTH]

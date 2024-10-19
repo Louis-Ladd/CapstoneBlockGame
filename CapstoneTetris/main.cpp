@@ -40,9 +40,10 @@ int main(int argc, char *argv[])
 
 	SDL_assert(tetris != nullptr);
 
+	std::cout << "Press space to go through queue" << std::endl;
+
 	while (game->GetRunning())
 	{
-		//std::cout << SDL_GetTicks() << std::endl;
 
 		// Background Color
 		SDL_SetRenderDrawColor(game->renderer, 0, 0, 128, 0);
