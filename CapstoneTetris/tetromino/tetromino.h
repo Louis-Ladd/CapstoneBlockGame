@@ -6,9 +6,8 @@
 
 class Tetromino
 {
-private:
-	Vector2 position = { 0, 0 };
 public:
+	Vector2 position = { 0, 0 };
 	int shape[4][4];
 	void Render(SDL_Renderer* renderer);
 	void MoveLeft();
@@ -17,7 +16,7 @@ public:
 	bool CheckIfAtBottom();
 	void RotateCounterClockWise();
 	void RotateClockwise();
-	static Tetromino RandomTetromino();
+	static Tetromino* RandomTetromino();
 protected:
 	Tetromino()
 	{

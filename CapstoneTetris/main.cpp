@@ -14,13 +14,20 @@ void handle_events(Game* game)
 			case SDL_QUIT:
 				game->SetRunning(false);
 				break;
+			case SDL_KEYDOWN:
+				if (game->window_event.key.keysym.sym == SDLK_SPACE)
+				{
+					Tetris::GetInstance()->NextBlock();
+				}
+				break;
 		}
 	}
 }
 
 int main(int argc, char *argv[])
 {
-	std::cout << "Game starting" << std::endl;
+	std::cout << "Game starting..." << std::endl;
+
 	Game* game = Game::GetInstance();
 
 	if (game->window == nullptr ||
@@ -33,19 +40,9 @@ int main(int argc, char *argv[])
 
 	SDL_assert(tetris != nullptr);
 
-	Tetromino I = IShape();
-
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-			std::cout << I.shape[i][j];
-
-		std::cout << std::endl;
-	}
-
 	while (game->GetRunning())
 	{
-		std::cout << SDL_GetTicks() << std::endl;
+		//std::cout << SDL_GetTicks() << std::endl;
 
 		// Background Color
 		SDL_SetRenderDrawColor(game->renderer, 0, 0, 128, 0);
@@ -54,6 +51,7 @@ int main(int argc, char *argv[])
 		// TODO: abstract event handler into a proper inputs class
 		handle_events(game);
 
+		tetris->Update();
 		tetris->Render(game->renderer);
 
 		SDL_RenderPresent(game->renderer);
