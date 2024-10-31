@@ -1,36 +1,52 @@
-#include "tetromino.h"
-#include "tetrominos.h"
+#include "tetromino.hpp"
+#include "tetrominos.hpp"
 
-#include <iostream>
+Tetromino Tetromino::RandomTetromino() {
+    int random_number = std::rand() % 7;
 
-Tetromino* Tetromino::RandomTetromino()
-{
-	int random_number = std::rand() % 7;
-
-	std::cout << random_number << std::endl;
-
-	switch (random_number)
-	{
-		case 0:
-			return new IShape();
-			break;
-		case 1:
-			return new TShape();
-			break;
-		case 2:
-			return new LShape();
-			break;
-		case 3:
-			return new JShape();
-			break;
-		case 4:
-			return new SShape();
-			break;
-		case 5: 
-			return new ZShape();
-			break;
-		case 6:
-			return new OShape();
-			break;
-	}
+    switch (random_number) {
+        case 0:
+            return IShape();
+            break;
+        case 1:
+            return TShape();
+            break;
+        case 2:
+            return LShape();
+            break;
+        case 3:
+            return JShape();
+            break;
+        case 4:
+            return SShape();
+            break;
+        case 5:
+            return ZShape();
+            break;
+        case 6:
+            return OShape();
+            break;
+    }
+    return IShape();
 }
+
+bool Tetromino::CheckIfLanded(int board[BOARD_HEIGHT][BOARD_WIDTH]) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (this->shape[i][j] == 0) {
+                continue;
+            }
+
+            if ((this->position.y + i) + 1 >= BOARD_HEIGHT) {
+                return true;
+            }
+
+            if (board[(this->position.y + i) + 1][this->position.x + j] > 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Tetromino::MoveDown() { this->position.y++; }
