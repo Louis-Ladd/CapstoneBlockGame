@@ -73,6 +73,8 @@ void Tetris::Update() {
         this->NextBlock();
     }
 
+    // TODO: Allow multiple inputs at once
+
     if (this->game->event_handler.ResetKey(SDLK_a) &&
         this->current_block.CheckMoveHorizontally(-1, board)) {
         this->current_block.MoveLeft();
@@ -81,8 +83,10 @@ void Tetris::Update() {
         this->current_block.CheckMoveHorizontally(1, board)) {
         this->current_block.MoveRight();
     }
+
+    // TODO: Rotate is unsafe, check board bounds before rotating!
     if (this->game->event_handler.ResetKey(SDLK_SPACE)) {
-        this->current_block.RotateCounterClockwise();
+        this->current_block.RotateClockwise();
     }
 }
 
