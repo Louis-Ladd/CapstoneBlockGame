@@ -1,9 +1,11 @@
 #include "game.hpp"
+#include "log.hpp"
+
 Game* Game::instance_ptr = nullptr;
 
 Game::Game() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cout << "SDL was unable to initialize" << std::endl;
+        LOG("SDL was unable to initialize");
         this->renderer = nullptr;
         this->window = nullptr;
         return;
@@ -14,7 +16,7 @@ Game::Game() {
                                     SCREEN_WIDTH, 0);
 
     if (!this->window) {
-        std::cout << "Failed to create SDL window" << std::endl;
+        LOG("Failed to create SDL window");
         this->renderer = nullptr;
         this->window = nullptr;
         return;
@@ -26,7 +28,7 @@ Game::Game() {
         SDL_CreateRenderer(this->window, -1, SDL_RENDERER_SOFTWARE);
 
     if (!this->renderer) {
-        std::cout << "Failed to create SDL renderer" << std::endl;
+        LOG("Failed to create SDL renderer");
         this->renderer = nullptr;
         return;
     }

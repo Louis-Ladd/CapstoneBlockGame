@@ -1,7 +1,7 @@
 #pragma once
 
+#include "input.hpp"
 #include <SDL2/SDL.h>
-#include <iostream>
 
 #define SCREEN_HEIGHT 800
 #define SCREEN_WIDTH 600
@@ -16,6 +16,7 @@ class Game {
     SDL_Renderer* renderer;
     SDL_Window* window;
     SDL_Event window_event;
+    GameEventHandler event_handler;
     static Game* GetInstance() {
         if (instance_ptr == nullptr) {
             instance_ptr = new Game();

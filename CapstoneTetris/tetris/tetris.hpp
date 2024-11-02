@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../game.hpp"
 #include "../tetromino/tetromino.hpp"
 #include <queue>
 
@@ -11,12 +12,13 @@ enum GAME_STATES { paused, running, end };
 
 class Tetris {
   private:
+    Tetris();
     static Tetris* instance_ptr;
     int board[BOARD_HEIGHT][BOARD_WIDTH];
-    std::queue<Tetromino> block_queue;
-    Tetromino current_block = Tetromino::RandomTetromino();
     double block_fall_cooldown = SDL_GetTicks();
-    Tetris();
+    std::queue<Tetromino> block_queue;
+    Game* game;
+    Tetromino current_block = Tetromino::RandomTetromino();
     void SetDrawColor(int block_state, SDL_Renderer* renderer);
 
   public:
@@ -30,6 +32,7 @@ class Tetris {
     }
     ~Tetris();
     void NextBlock();
+    void AddBlock(Tetromino tetromino);
     void Update();
     void Render(SDL_Renderer* renderer);
     int (*GetBoard())[BOARD_WIDTH];

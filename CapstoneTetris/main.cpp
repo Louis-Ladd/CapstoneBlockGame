@@ -3,21 +3,6 @@
 
 #include "main.hpp"
 
-void handle_events(Game* game) {
-    while (SDL_PollEvent(&game->window_event) > 0) {
-        switch (game->window_event.type) {
-            case SDL_QUIT:
-                game->SetRunning(false);
-                break;
-            case SDL_KEYDOWN:
-                if (game->window_event.key.keysym.sym == SDLK_SPACE) {
-                    Tetris::GetInstance()->NextBlock();
-                }
-                break;
-        }
-    }
-}
-
 int main(int argc, char* argv[]) {
     std::cout << "Game starting..." << std::endl;
 
@@ -39,8 +24,7 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(game->renderer, 0, 0, 128, 0);
         SDL_RenderClear(game->renderer);
 
-        // TODO: abstract event handler into a proper inputs class
-        handle_events(game);
+        game->event_handler.HandleEvent(game);
 
         tetris->Update();
         tetris->Render(game->renderer);

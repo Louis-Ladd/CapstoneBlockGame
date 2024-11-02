@@ -1,5 +1,6 @@
 #include "tetris.hpp"
 #include "../log.hpp"
+#include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_timer.h>
 
 Tetris* Tetris::instance_ptr = nullptr;
@@ -17,17 +18,15 @@ Tetris::Tetris() {
 
     memset(board, 0, sizeof(board));
 
-    board[19][3] = 4;
-    board[19][4] = 4;
-    board[19][5] = 4;
-}
+    for (int i = 0; i < 20; i++) {
+        board[i][1] = 4;
+    }
 
-void Tetris::NextBlock() {
-    current_block = block_queue.front();
-    block_queue.pop();
-    block_queue.push(Tetromino::RandomTetromino());
+    this->game = Game::GetInstance();
 
-    current_block.position.x = 3;
+    if (this->game == nullptr) {
+        LOG("Tetris couldn't find game insance");
+    }
 }
 
 void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer) {
@@ -63,27 +62,31 @@ void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer) {
 }
 
 void Tetris::Update() {
-    if (SDL_GetTicks() - this->block_fall_cooldown >= 50 &&
+    if (SDL_GetTicks() - this->block_fall_cooldown >= 100 &&
         !this->current_block.CheckIfLanded(this->board)) {
         this->current_block.MoveDown();
         this->block_fall_cooldown = SDL_GetTicks();
-        LOG("Have we colided?... %i",
-            this->current_block.CheckIfLanded(this->board));
+    }
+
+    if (this->current_block.CheckIfLanded(this->board)) {
+        this->AddBlock(this->current_block);
+        this->NextBlock();
+    }
+
+    if (this->game->event_handler.ResetKey(SDLK_a) &&
+        this->current_block.CheckMoveHorizontally(-1, board)) {
+        this->current_block.MoveLeft();
+    }
+    if (this->game->event_handler.ResetKey(SDLK_d) &&
+        this->current_block.CheckMoveHorizontally(1, board)) {
+        this->current_block.MoveRight();
+    }
+    if (this->game->event_handler.ResetKey(SDLK_SPACE)) {
+        this->current_block.RotateCounterClockwise();
     }
 }
 
 void Tetris::Render(SDL_Renderer* renderer) {
-    /*for (int i = 0; i < 4; i++)
-    {
-            for (int j = 0; j < 4; j++)
-            {
-                    std::cout << current_block->shape[j][i];
-            }
-            std::cout << std::endl;
-    }
-
-    std::cout << std::endl;*/
-
     SDL_Rect block = {0, 0, BLOCK_SIZE, BLOCK_SIZE};
 
     for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -132,6 +135,26 @@ void Tetris::Render(SDL_Renderer* renderer) {
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
             SDL_RenderDrawRect(renderer, &block);
+        }
+    }
+}
+
+void Tetris::NextBlock() {
+    current_block = block_queue.front();
+    block_queue.pop();
+    block_queue.push(Tetromino::RandomTetromino());
+
+    current_block.position.x = 3;
+}
+
+void Tetris::AddBlock(Tetromino tetromino) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (tetromino.shape[i][j] == 0) {
+                continue;
+            }
+            board[tetromino.position.y + i][tetromino.position.x + j] =
+                tetromino.shape[i][j];
         }
     }
 }

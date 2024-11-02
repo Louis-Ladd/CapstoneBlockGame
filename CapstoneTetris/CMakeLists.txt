@@ -8,7 +8,7 @@
 find_package(SDL2 REQUIRED)
 
 # Add source to this project's executable.
-add_executable (CapstoneTetris "main.cpp" "main.h" "game.cpp" "game.h" "tetris/tetris.h" "tetris/tetris.cpp" "utils/vector2.h" "tetromino/tetrominos.h" "tetromino/tetromino.cpp")
+add_executable (CapstoneTetris "main.cpp" "main.hpp" "game.cpp" "game.hpp" "tetris/tetris.hpp" "tetris/tetris.cpp" "utils/vector2.hpp" "tetromino/tetrominos.hpp" "tetromino/tetromino.cpp" "input.cpp" "input.hpp")
 
 target_link_libraries(CapstoneTetris SDL2::SDL2 SDL2::SDL2main)
 

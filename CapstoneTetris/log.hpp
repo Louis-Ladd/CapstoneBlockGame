@@ -1,5 +1,4 @@
-#ifndef LOG_HPP_
-#define LOG_HPP_
+#pragma once
 
 #include <cstdio>
 #include <filesystem>
@@ -8,5 +7,3 @@
     printf("\033[32m[%s:%d][%s()]\033[0m " fmt "\n",                           \
            std::filesystem::path(__FILE__).filename().string().c_str(),        \
            __LINE__, __func__, ##__VA_ARGS__)
-
-#endif

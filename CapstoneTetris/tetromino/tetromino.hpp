@@ -11,11 +11,13 @@ class Tetromino {
     Vector2 position = {0, 0};
     int shape[4][4];
     void Render(SDL_Renderer* renderer);
+    bool CheckMoveHorizontally(int direction,
+                               int board[BOARD_HEIGHT][BOARD_WIDTH]);
     void MoveLeft();
     void MoveRight();
     void MoveDown();
     bool CheckIfLanded(int board[BOARD_HEIGHT][BOARD_WIDTH]);
-    void RotateCounterClockWise();
+    void RotateCounterClockwise();
     void RotateClockwise();
     static Tetromino RandomTetromino();
 
