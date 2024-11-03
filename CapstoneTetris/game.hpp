@@ -1,7 +1,7 @@
 #pragma once
 
 #include "input.hpp"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #define SCREEN_HEIGHT 800
 #define SCREEN_WIDTH 600

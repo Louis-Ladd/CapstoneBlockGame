@@ -5,7 +5,7 @@
 
 #include "game.hpp"
 #include "tetris/tetris.hpp"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <iostream>
 
 // TODO: Reference additional headers your program requires here.

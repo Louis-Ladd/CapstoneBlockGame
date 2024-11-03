@@ -7,6 +7,13 @@
 
 find_package(SDL2 REQUIRED)
 
+if(WIN32)
+    include_directories(${SDL2_INCLUDE_DIRS})  # For Windows
+else()
+    include_directories(${SDL2_INCLUDE_DIRS} SDL2)  # For Linux/macOS
+endif()
+
+
 # Add source to this project's executable.
 add_executable (CapstoneTetris "main.cpp" "main.hpp" "game.cpp" "game.hpp" "tetris/tetris.hpp" "tetris/tetris.cpp" "utils/vector2.hpp" "tetromino/tetrominos.hpp" "tetromino/tetromino.cpp" "input.cpp" "input.hpp")
 

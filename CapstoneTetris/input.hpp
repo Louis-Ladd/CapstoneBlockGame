@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_keyboard.h>
-#include <SDL2/SDL_keycode.h>
+#include <SDL_events.h>
+#include <SDL_keyboard.h>
+#include <SDL_keycode.h>
 
 #define MAX_KEYS 322
 

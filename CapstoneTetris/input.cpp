@@ -1,6 +1,6 @@
 #include "input.hpp"
 #include "game.hpp"
-#include <SDL2/SDL_keycode.h>
+#include <SDL_keycode.h>
 
 void GameEventHandler::UpdatePressedKeys(SDL_Event event) {
     int keycode = event.key.keysym.sym;
@@ -35,7 +35,10 @@ void GameEventHandler::HandleEvent(Game* game) {
             case SDL_QUIT:
                 game->SetRunning(false);
                 break;
-            case SDL_KEYDOWN ... SDL_KEYUP:
+            case SDL_KEYDOWN :
+                this->UpdatePressedKeys(game->window_event);
+                break;
+            case SDL_KEYUP:
                 this->UpdatePressedKeys(game->window_event);
                 break;
         }
