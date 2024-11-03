@@ -3,6 +3,7 @@
 #include "tetrominos.hpp"
 
 Tetromino Tetromino::RandomTetromino() {
+    return IShape();
     int random_number = std::rand() % 7;
 
     switch (random_number) {
@@ -80,12 +81,20 @@ void Tetromino::RotateClockwise() {
 
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
+            if (this->shape[i][j] == 0) {
+                continue;
+            }
             int new_x = -(j - ROTATION_CENTER_Y) + ROTATION_CENTER_X;
             int new_y = (i - ROTATION_CENTER_X) + ROTATION_CENTER_Y;
 
             if (new_x >= 0 && new_x < 4 && new_y >= 0 && new_y < 4) {
                 temp[new_x][new_y] = this->shape[i][j];
             }
+
+            // int new_x = j;
+            // int new_y = 3 - i;
+
+            // temp[new_x][new_y] = this->shape[i][j];
         }
     }
 
