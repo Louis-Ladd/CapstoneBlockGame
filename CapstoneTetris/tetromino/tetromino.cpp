@@ -2,11 +2,12 @@
 #include "../log.hpp"
 #include "tetrominos.hpp"
 
-Tetromino Tetromino::RandomTetromino() {
-    return IShape();
+Tetromino Tetromino::RandomTetromino()
+{
     int random_number = std::rand() % 7;
 
-    switch (random_number) {
+    switch (random_number)
+    {
         case 0:
             return IShape();
             break;
@@ -33,20 +34,26 @@ Tetromino Tetromino::RandomTetromino() {
 }
 
 bool Tetromino::CheckMoveHorizontally(int direction,
-                                      int board[BOARD_HEIGHT][BOARD_WIDTH]) {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (this->shape[i][j] == 0) {
+                                      int board[BOARD_HEIGHT][BOARD_WIDTH])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (this->shape[i][j] == 0)
+            {
                 continue;
             }
 
             if ((this->position.x + j) + direction < 0 ||
-                (this->position.x + j) + direction >= BOARD_WIDTH) {
+                (this->position.x + j) + direction >= BOARD_WIDTH)
+            {
                 return false;
             }
 
             if (board[this->position.y + i]
-                     [(this->position.x + j) + direction] > 0) {
+                     [(this->position.x + j) + direction] > 0)
+            {
                 return false;
             }
         }
@@ -54,18 +61,24 @@ bool Tetromino::CheckMoveHorizontally(int direction,
     return true;
 }
 
-bool Tetromino::CheckIfLanded(int board[BOARD_HEIGHT][BOARD_WIDTH]) {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (this->shape[i][j] == 0) {
+bool Tetromino::CheckIfLanded(int board[BOARD_HEIGHT][BOARD_WIDTH])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (this->shape[i][j] == 0)
+            {
                 continue;
             }
 
-            if ((this->position.y + i) + 1 >= BOARD_HEIGHT) {
+            if ((this->position.y + i) + 1 >= BOARD_HEIGHT)
+            {
                 return true;
             }
 
-            if (board[(this->position.y + i) + 1][this->position.x + j] > 0) {
+            if (board[(this->position.y + i) + 1][this->position.x + j] > 0)
+            {
                 return true;
             }
         }
@@ -76,18 +89,23 @@ bool Tetromino::CheckIfLanded(int board[BOARD_HEIGHT][BOARD_WIDTH]) {
 #define ROTATION_CENTER_X 1
 #define ROTATION_CENTER_Y 1
 
-void Tetromino::RotateClockwise() {
+void Tetromino::RotateClockwise()
+{
     int temp[4][4] = {0};
 
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            if (this->shape[i][j] == 0) {
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            if (this->shape[i][j] == 0)
+            {
                 continue;
             }
             int new_x = -(j - ROTATION_CENTER_Y) + ROTATION_CENTER_X;
             int new_y = (i - ROTATION_CENTER_X) + ROTATION_CENTER_Y;
 
-            if (new_x >= 0 && new_x < 4 && new_y >= 0 && new_y < 4) {
+            if (new_x >= 0 && new_x < 4 && new_y >= 0 && new_y < 4)
+            {
                 temp[new_x][new_y] = this->shape[i][j];
             }
 
@@ -98,29 +116,37 @@ void Tetromino::RotateClockwise() {
         }
     }
 
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
             this->shape[i][j] = temp[i][j];
         }
     }
 }
 
-void Tetromino::RotateCounterClockwise() {
+void Tetromino::RotateCounterClockwise()
+{
     int temp[4][4] = {0};
 
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
             int new_x = (j - ROTATION_CENTER_Y) + ROTATION_CENTER_X;
             int new_y = -(i - ROTATION_CENTER_X) + ROTATION_CENTER_Y;
 
-            if (new_x >= 0 && new_x < 4 && new_y >= 0 && new_y < 4) {
+            if (new_x >= 0 && new_x < 4 && new_y >= 0 && new_y < 4)
+            {
                 temp[new_x][new_y] = this->shape[i][j];
             }
         }
     }
 
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
             this->shape[i][j] = temp[i][j];
         }
     }
