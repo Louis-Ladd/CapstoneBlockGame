@@ -7,16 +7,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Game starting..." << std::endl;
 
     Game* game = Game::GetInstance();
-
-    if (game->window == nullptr || game->renderer == nullptr) {
-        return 1;
-    }
-
     Tetris* tetris = Tetris::GetInstance();
 
-    SDL_assert(tetris != nullptr);
-
-    std::cout << "Press space to go through queue" << std::endl;
 
     while (game->GetRunning()) {
 
