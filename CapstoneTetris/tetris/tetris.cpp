@@ -9,8 +9,10 @@ Tetris* Tetris::instance_ptr = nullptr;
 #define BLOCK_OFFSET_X 150
 #define BLOCK_OFFSET_Y 25
 
-Tetris::Tetris() {
-    for (int i = 0; i < 3; i++) {
+Tetris::Tetris()
+{
+    for (int i = 0; i < 3; i++)
+    {
         this->block_queue.push(Tetromino::RandomTetromino());
     }
 
@@ -18,19 +20,23 @@ Tetris::Tetris() {
 
     memset(board, 0, sizeof(board));
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 20; i++)
+    {
         board[i][1] = 4;
     }
 
     this->game = Game::GetInstance();
 
-    if (this->game == nullptr) {
+    if (this->game == nullptr)
+    {
         LOG("Tetris couldn't find game insance");
     }
 }
 
-void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer) {
-    switch (block_state) {
+void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer)
+{
+    switch (block_state)
+    {
         case 0:
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); // Black
             break;
@@ -61,14 +67,17 @@ void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer) {
     }
 }
 
-void Tetris::Update() {
-    if (SDL_GetTicks() - this->block_fall_cooldown >= 100 &&
-        !this->current_block.CheckIfLanded(this->board)) {
+void Tetris::Update()
+{
+    if (SDL_GetTicks() - this->block_fall_cooldown >= 250 &&
+        !this->current_block.CheckIfLanded(this->board))
+    {
         this->current_block.MoveDown();
         this->block_fall_cooldown = SDL_GetTicks();
     }
 
-    if (this->current_block.CheckIfLanded(this->board)) {
+    if (this->current_block.CheckIfLanded(this->board))
+    {
         this->AddBlock(this->current_block);
         this->NextBlock();
     }
@@ -76,25 +85,31 @@ void Tetris::Update() {
     // TODO: Allow multiple inputs at once
 
     if (this->game->event_handler.ResetKey(SDLK_a) &&
-        this->current_block.CheckMoveHorizontally(-1, board)) {
+        this->current_block.CheckMoveHorizontally(-1, board))
+    {
         this->current_block.MoveLeft();
     }
     if (this->game->event_handler.ResetKey(SDLK_d) &&
-        this->current_block.CheckMoveHorizontally(1, board)) {
+        this->current_block.CheckMoveHorizontally(1, board))
+    {
         this->current_block.MoveRight();
     }
 
     // TODO: Rotate is unsafe, check board bounds before rotating!
-    if (this->game->event_handler.ResetKey(SDLK_SPACE)) {
+    if (this->game->event_handler.ResetKey(SDLK_SPACE))
+    {
         this->current_block.RotateClockwise();
     }
 }
 
-void Tetris::Render(SDL_Renderer* renderer) {
+void Tetris::Render(SDL_Renderer* renderer)
+{
     SDL_Rect block = {0, 0, BLOCK_SIZE, BLOCK_SIZE};
 
-    for (int x = 0; x < BOARD_WIDTH; x++) {
-        for (int y = 0; y < BOARD_HEIGHT; y++) {
+    for (int x = 0; x < BOARD_WIDTH; x++)
+    {
+        for (int y = 0; y < BOARD_HEIGHT; y++)
+        {
             SetDrawColor(this->board[y][x], renderer);
 
             block.x = (BLOCK_SIZE * x) + BLOCK_OFFSET_X;
@@ -106,13 +121,16 @@ void Tetris::Render(SDL_Renderer* renderer) {
         }
     }
 
-    for (int ix = 0; ix < 4; ix++) {
-        for (int iy = 0; iy < 4; iy++) {
-            if (this->current_block.shape[iy][ix] == 0) {
+    for (int ix = 0; ix < 4; ix++)
+    {
+        for (int iy = 0; iy < 4; iy++)
+        {
+            if (this->current_block.GetShape()[iy][ix] == 0)
+            {
                 continue;
             }
 
-            SetDrawColor(this->current_block.shape[iy][ix], renderer);
+            SetDrawColor(this->current_block.GetShape()[iy][ix], renderer);
             block.x = (BLOCK_SIZE * ix) + BLOCK_OFFSET_X +
                       this->current_block.position.x * BLOCK_SIZE;
             block.y = (BLOCK_SIZE * iy) + BLOCK_OFFSET_Y +
@@ -126,13 +144,16 @@ void Tetris::Render(SDL_Renderer* renderer) {
 
     Tetromino next_block = this->block_queue.front();
 
-    for (int ix = 0; ix < 4; ix++) {
-        for (int iy = 0; iy < 4; iy++) {
-            if (this->block_queue.front().shape[iy][ix] == 0) {
+    for (int ix = 0; ix < 4; ix++)
+    {
+        for (int iy = 0; iy < 4; iy++)
+        {
+            if (this->block_queue.front().GetShape()[iy][ix] == 0)
+            {
                 continue;
             }
 
-            SetDrawColor(next_block.shape[iy][ix], renderer);
+            SetDrawColor(next_block.GetShape()[iy][ix], renderer);
             block.x = (BLOCK_SIZE * ix) + 600;
             block.y = (BLOCK_SIZE * iy) + 40;
             SDL_RenderFillRect(renderer, &block);
@@ -143,7 +164,8 @@ void Tetris::Render(SDL_Renderer* renderer) {
     }
 }
 
-void Tetris::NextBlock() {
+void Tetris::NextBlock()
+{
     current_block = block_queue.front();
     block_queue.pop();
     block_queue.push(Tetromino::RandomTetromino());
@@ -151,14 +173,18 @@ void Tetris::NextBlock() {
     current_block.position.x = 3;
 }
 
-void Tetris::AddBlock(Tetromino tetromino) {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (tetromino.shape[i][j] == 0) {
+void Tetris::AddBlock(Tetromino tetromino)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (tetromino.GetShape()[i][j] == 0)
+            {
                 continue;
             }
             board[tetromino.position.y + i][tetromino.position.x + j] =
-                tetromino.shape[i][j];
+                tetromino.GetShape()[i][j];
         }
     }
 }

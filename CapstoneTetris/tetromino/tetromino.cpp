@@ -4,6 +4,7 @@
 
 Tetromino Tetromino::RandomTetromino()
 {
+    return IShape();
     int random_number = std::rand() % 7;
 
     switch (random_number)
@@ -34,13 +35,13 @@ Tetromino Tetromino::RandomTetromino()
 }
 
 bool Tetromino::CheckMoveHorizontally(int direction,
-                                      int board[BOARD_HEIGHT][BOARD_WIDTH])
+                                      int (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 {
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            if (this->shape[i][j] == 0)
+            if (this->GetShape()[i][j] == 0)
             {
                 continue;
             }
@@ -61,13 +62,13 @@ bool Tetromino::CheckMoveHorizontally(int direction,
     return true;
 }
 
-bool Tetromino::CheckIfLanded(int board[BOARD_HEIGHT][BOARD_WIDTH])
+bool Tetromino::CheckIfLanded(int (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 {
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            if (this->shape[i][j] == 0)
+            if (this->GetShape()[i][j] == 0)
             {
                 continue;
             }
@@ -86,71 +87,14 @@ bool Tetromino::CheckIfLanded(int board[BOARD_HEIGHT][BOARD_WIDTH])
     return false;
 }
 
-#define ROTATION_CENTER_X 1
-#define ROTATION_CENTER_Y 1
-
-void Tetromino::RotateClockwise()
+inline bool CheckValidRotation(int* rotated_shape[4][4],
+                               int board[BOARD_HEIGHT][BOARD_WIDTH])
 {
-    int temp[4][4] = {0};
-
-    for (int i = 0; i < 4; ++i)
-    {
-        for (int j = 0; j < 4; ++j)
-        {
-            if (this->shape[i][j] == 0)
-            {
-                continue;
-            }
-            int new_x = -(j - ROTATION_CENTER_Y) + ROTATION_CENTER_X;
-            int new_y = (i - ROTATION_CENTER_X) + ROTATION_CENTER_Y;
-
-            if (new_x >= 0 && new_x < 4 && new_y >= 0 && new_y < 4)
-            {
-                temp[new_x][new_y] = this->shape[i][j];
-            }
-
-            // int new_x = j;
-            // int new_y = 3 - i;
-
-            // temp[new_x][new_y] = this->shape[i][j];
-        }
-    }
-
-    for (int i = 0; i < 4; ++i)
-    {
-        for (int j = 0; j < 4; ++j)
-        {
-            this->shape[i][j] = temp[i][j];
-        }
-    }
 }
 
-void Tetromino::RotateCounterClockwise()
-{
-    int temp[4][4] = {0};
+void Tetromino::RotateClockwise() { this->rotation = (this->rotation + 1) % 4; }
 
-    for (int i = 0; i < 4; ++i)
-    {
-        for (int j = 0; j < 4; ++j)
-        {
-            int new_x = (j - ROTATION_CENTER_Y) + ROTATION_CENTER_X;
-            int new_y = -(i - ROTATION_CENTER_X) + ROTATION_CENTER_Y;
-
-            if (new_x >= 0 && new_x < 4 && new_y >= 0 && new_y < 4)
-            {
-                temp[new_x][new_y] = this->shape[i][j];
-            }
-        }
-    }
-
-    for (int i = 0; i < 4; ++i)
-    {
-        for (int j = 0; j < 4; ++j)
-        {
-            this->shape[i][j] = temp[i][j];
-        }
-    }
-}
+void Tetromino::RotateCounterClockwise() {}
 
 void Tetromino::MoveLeft() { this->position.x--; }
 
