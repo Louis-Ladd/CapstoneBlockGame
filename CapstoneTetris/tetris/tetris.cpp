@@ -85,8 +85,8 @@ void Tetris::Update()
     if (this->current_block.CheckIfLanded(this->board))
     {
         this->AddBlock(this->current_block);
-        this->UpdateClearedLines();
         this->NextBlock();
+        this->UpdateClearedLines();
     }
 
     if (this->game->event_handler.ResetKey(SDLK_a) &&
@@ -207,6 +207,7 @@ void Tetris::UpdateClearedLines()
                 board[row][col] = 0;
                 Tetris::Render(this->game->renderer);
                 SDL_RenderPresent(this->game->renderer);
+                std::this_thread::sleep_for(std::chrono::milliseconds(25));
             }
             update_needed = true;
             cleared_line_indexes.push_back(row);

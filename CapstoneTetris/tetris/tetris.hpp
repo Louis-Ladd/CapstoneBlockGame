@@ -7,8 +7,9 @@
 #include <SDL_timer.h>
 #include <SDL.h>
 #include <queue>
-#include <stdlib.h>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 // Standard tetris is 10 wide and 20 high
 #define BOARD_HEIGHT 20
