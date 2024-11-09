@@ -2,7 +2,13 @@
 
 #include "../game.hpp"
 #include "../tetromino/tetromino.hpp"
+#include "../tetromino/tetrominos.hpp"
+#include <SDL_keycode.h>
+#include <SDL_timer.h>
+#include <SDL.h>
 #include <queue>
+#include <stdlib.h>
+#include <vector>
 
 // Standard tetris is 10 wide and 20 high
 #define BOARD_HEIGHT 20
@@ -20,6 +26,7 @@ class Tetris {
     Game* game;
     Tetromino current_block = Tetromino::RandomTetromino();
     void SetDrawColor(int block_state, SDL_Renderer* renderer);
+    void UpdateClearedLines();
 
   public:
     // Singleton

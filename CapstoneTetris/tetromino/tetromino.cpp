@@ -4,7 +4,6 @@
 
 Tetromino Tetromino::RandomTetromino()
 {
-    return IShape();
     int random_number = std::rand() % 7;
 
     switch (random_number)
@@ -87,14 +86,49 @@ bool Tetromino::CheckIfLanded(int (&board)[BOARD_HEIGHT][BOARD_WIDTH])
     return false;
 }
 
-inline bool CheckValidRotation(int* rotated_shape[4][4],
-                               int board[BOARD_HEIGHT][BOARD_WIDTH])
+inline bool Tetromino::CheckValidRotation(int board[BOARD_HEIGHT][BOARD_WIDTH])
 {
+    int rotated_block[4][4];
+    std::copy(&shapes[(rotation + 1) % 4][0][0], &shapes[(rotation + 1) % 4][0][0] + 4 * 4, &rotated_block[0][0]);
+
+    Vector2 pos = this->position;
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (rotated_block[i][j] == 0)
+            {
+                continue;
+            }
+            
+            if ((pos.x + j) - 1 < 0 ||
+                (pos.x + j) + 1 >= BOARD_WIDTH)
+            {
+                return false;
+            }
+
+            if (board[pos.y + i]
+                     [(pos.x + j) + 1] > 0 ||
+                board[pos.y + i]
+                     [(pos.x + j) - 1] > 0 ||
+                board[pos.y + i][pos.x + j] > 0)
+            {
+                return false;
+            }
+        }
+    }
 }
 
-void Tetromino::RotateClockwise() { this->rotation = (this->rotation + 1) % 4; }
+void Tetromino::RotateClockwise(int board[BOARD_HEIGHT][BOARD_WIDTH]) { 
+    if (!this->CheckValidRotation(board))
+    {
+        return;
+    }
+    this->rotation = (this->rotation + 1) % 4; 
+}
 
-void Tetromino::RotateCounterClockwise() {}
+void Tetromino::RotateCounterClockwise(int board[BOARD_HEIGHT][BOARD_WIDTH]) {}
 
 void Tetromino::MoveLeft() { this->position.x--; }
 

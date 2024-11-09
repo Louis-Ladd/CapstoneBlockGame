@@ -21,11 +21,12 @@ class Tetromino
     void MoveRight();
     void MoveDown();
     bool CheckIfLanded(int (&board)[BOARD_HEIGHT][BOARD_WIDTH]);
-    void RotateCounterClockwise();
-    void RotateClockwise();
+    void RotateClockwise(int board[BOARD_HEIGHT][BOARD_WIDTH]);
+    void RotateCounterClockwise(int board[BOARD_HEIGHT][BOARD_WIDTH]);
     static Tetromino RandomTetromino();
 
   protected:
+      inline bool CheckValidRotation(int board[BOARD_HEIGHT][BOARD_WIDTH]);
     Tetromino()
     {
         for (int i = 0; i < 4; i++)

@@ -1,7 +1,5 @@
 #include "tetris.hpp"
 #include "../log.hpp"
-#include <SDL_keycode.h>
-#include <SDL_timer.h>
 
 Tetris* Tetris::instance_ptr = nullptr;
 
@@ -11,10 +9,18 @@ Tetris* Tetris::instance_ptr = nullptr;
 
 Tetris::Tetris()
 {
-    for (int i = 0; i < 3; i++)
+    /*for (int i = 0; i < 3; i++)
     {
         this->block_queue.push(Tetromino::RandomTetromino());
-    }
+    }*/
+
+    this->block_queue.push(IShape());
+    this->block_queue.push(JShape());
+    this->block_queue.push(LShape());
+    this->block_queue.push(OShape());
+    this->block_queue.push(SShape());
+    this->block_queue.push(TShape());
+    this->block_queue.push(ZShape());
 
     this->NextBlock();
 
@@ -22,7 +28,7 @@ Tetris::Tetris()
 
     for (int i = 0; i < 20; i++)
     {
-        board[i][1] = 4;
+        board[i][0] = (i % 7)+1;
     }
 
     this->game = Game::GetInstance();
@@ -69,7 +75,7 @@ void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer)
 
 void Tetris::Update()
 {
-    if (SDL_GetTicks() - this->block_fall_cooldown >= 250 &&
+    if (SDL_GetTicks() - this->block_fall_cooldown >= 150 &&
         !this->current_block.CheckIfLanded(this->board))
     {
         this->current_block.MoveDown();
@@ -79,10 +85,9 @@ void Tetris::Update()
     if (this->current_block.CheckIfLanded(this->board))
     {
         this->AddBlock(this->current_block);
+        this->UpdateClearedLines();
         this->NextBlock();
     }
-
-    // TODO: Allow multiple inputs at once
 
     if (this->game->event_handler.ResetKey(SDLK_a) &&
         this->current_block.CheckMoveHorizontally(-1, board))
@@ -95,10 +100,9 @@ void Tetris::Update()
         this->current_block.MoveRight();
     }
 
-    // TODO: Rotate is unsafe, check board bounds before rotating!
     if (this->game->event_handler.ResetKey(SDLK_SPACE))
     {
-        this->current_block.RotateClockwise();
+        this->current_block.RotateClockwise(board);
     }
 }
 
@@ -186,6 +190,41 @@ void Tetris::AddBlock(Tetromino tetromino)
             board[tetromino.position.y + i][tetromino.position.x + j] =
                 tetromino.GetShape()[i][j];
         }
+    }
+}
+
+void Tetris::UpdateClearedLines()
+{
+    bool update_needed = false;
+    std::vector<int> cleared_line_indexes;
+
+    for (int row = 0; row < BOARD_HEIGHT; row++)
+    {
+        if (std::all_of(board[row], board[row] + BOARD_WIDTH, [](int i) {return i > 0; }))
+        {
+            for (int col = 0; col < BOARD_WIDTH; col++)
+            {
+                board[row][col] = 0;
+                Tetris::Render(this->game->renderer);
+                SDL_RenderPresent(this->game->renderer);
+            }
+            update_needed = true;
+            cleared_line_indexes.push_back(row);
+        }
+    }
+
+    if (!update_needed)
+    {
+        return;
+    }
+
+    for (int index : cleared_line_indexes)
+    {
+        for (int relative_row = index; relative_row > 0; relative_row--)
+        {
+            std::copy(board[relative_row - 1], board[relative_row - 1] + BOARD_WIDTH, board[relative_row]);
+        }
+        memset(board[0], 0, sizeof(board[0]));
     }
 }
 
