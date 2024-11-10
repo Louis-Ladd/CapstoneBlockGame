@@ -75,18 +75,28 @@ void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer)
 
 void Tetris::Update()
 {
+    LOG("Delta Time: %f", this->game->delta_time);
     if (SDL_GetTicks() - this->block_fall_cooldown >= 150 &&
         !this->current_block.CheckIfLanded(this->board))
     {
         this->current_block.MoveDown();
         this->block_fall_cooldown = SDL_GetTicks();
+        this->block_drop_grace = 5;
     }
 
     if (this->current_block.CheckIfLanded(this->board))
     {
-        this->AddBlock(this->current_block);
-        this->NextBlock();
-        this->UpdateClearedLines();
+        if (this->block_drop_grace >= 0)
+        {
+            this->block_drop_grace -= this->game->delta_time;
+        }
+        else
+        {
+            this->AddBlock(this->current_block);
+            this->NextBlock();
+            this->UpdateClearedLines();
+            this->block_drop_grace = 5;
+        }
     }
 
     if (this->game->event_handler.ResetKey(SDLK_a) &&

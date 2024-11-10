@@ -17,6 +17,7 @@ class Game {
     SDL_Window* window;
     SDL_Event window_event;
     GameEventHandler event_handler;
+    double delta_time = 1;
     static Game* GetInstance() {
         if (instance_ptr == nullptr) {
             instance_ptr = new Game();

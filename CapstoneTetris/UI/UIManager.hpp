@@ -1,0 +1,14 @@
+#pragma once
+
+#include <SDL.h>
+
+class UIManager
+{
+public:
+	UIManager(SDL_Renderer* renderer);
+	~UIManager();
+
+private:
+	SDL_Renderer* renderer;
+	// TODO: TTF Font pointer (I don't have the lib setup yet) TTF_Font* font;
+};

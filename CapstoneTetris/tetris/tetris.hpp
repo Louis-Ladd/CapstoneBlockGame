@@ -22,6 +22,7 @@ class Tetris {
     Tetris();
     static Tetris* instance_ptr;
     int board[BOARD_HEIGHT][BOARD_WIDTH];
+    double block_drop_grace = 5;
     double block_fall_cooldown = SDL_GetTicks();
     std::queue<Tetromino> block_queue;
     Game* game;
