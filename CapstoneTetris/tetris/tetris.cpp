@@ -28,7 +28,7 @@ Tetris::Tetris()
 
     for (int i = 0; i < 20; i++)
     {
-        board[i][0] = (i % 7)+1;
+        board[i][0] = (i % 7) + 1;
     }
 
     this->game = Game::GetInstance();
@@ -86,12 +86,15 @@ void Tetris::Update()
 
     if (this->current_block.CheckIfLanded(this->board))
     {
+        LOG("Block is landed...");
         if (this->block_drop_grace >= 0)
         {
+            LOG("Grace timer is more than 0, subtracting delta_time");
             this->block_drop_grace -= this->game->delta_time;
         }
         else
         {
+            LOG("Grace timer is less than 0, resetting and next block");
             this->AddBlock(this->current_block);
             this->NextBlock();
             this->UpdateClearedLines();
@@ -210,7 +213,8 @@ void Tetris::UpdateClearedLines()
 
     for (int row = 0; row < BOARD_HEIGHT; row++)
     {
-        if (std::all_of(board[row], board[row] + BOARD_WIDTH, [](int i) {return i > 0; }))
+        if (std::all_of(board[row], board[row] + BOARD_WIDTH,
+                        [](int i) { return i > 0; }))
         {
             for (int col = 0; col < BOARD_WIDTH; col++)
             {
@@ -233,7 +237,9 @@ void Tetris::UpdateClearedLines()
     {
         for (int relative_row = index; relative_row > 0; relative_row--)
         {
-            std::copy(board[relative_row - 1], board[relative_row - 1] + BOARD_WIDTH, board[relative_row]);
+            std::copy(board[relative_row - 1],
+                      board[relative_row - 1] + BOARD_WIDTH,
+                      board[relative_row]);
         }
         memset(board[0], 0, sizeof(board[0]));
     }
