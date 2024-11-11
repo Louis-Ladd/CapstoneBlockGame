@@ -10,7 +10,7 @@ class Game;
 
 class GameEventHandler {
   private:
-    bool keys[MAX_KEYS];
+    bool keys[MAX_KEYS] = { false };
     void UpdatePressedKeys(SDL_Event event);
 
   public:

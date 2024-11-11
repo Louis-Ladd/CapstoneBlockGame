@@ -39,8 +39,9 @@ Tetris::Tetris()
     }
 }
 
-void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer)
+void Tetris::SetDrawColor(int block_state)
 {
+    SDL_Renderer* renderer = this->game->renderer;
     switch (block_state)
     {
         case 0:
@@ -73,32 +74,41 @@ void Tetris::SetDrawColor(int block_state, SDL_Renderer* renderer)
     }
 }
 
+void Tetris::ResetGraceTimer()
+{
+    this->block_drop_grace = 0.5f;
+}
+
+void Tetris::DropCurrentBlock()
+{
+    this->AddBlock(this->current_block);
+    this->NextBlock();
+    this->UpdateClearedLines();
+    ResetGraceTimer();
+
+}
+
 void Tetris::Update()
 {
     LOG("Delta Time: %f", this->game->delta_time);
+    LOG("Grace Time: %f", this->block_drop_grace);
     if (SDL_GetTicks() - this->block_fall_cooldown >= 150 &&
         !this->current_block.CheckIfLanded(this->board))
     {
         this->current_block.MoveDown();
         this->block_fall_cooldown = SDL_GetTicks();
-        this->block_drop_grace = 5;
+        ResetGraceTimer();
     }
 
     if (this->current_block.CheckIfLanded(this->board))
     {
-        LOG("Block is landed...");
         if (this->block_drop_grace >= 0)
         {
-            LOG("Grace timer is more than 0, subtracting delta_time");
-            this->block_drop_grace -= this->game->delta_time;
+            this->block_drop_grace -= 0.5f * this->game->delta_time;
         }
         else
         {
-            LOG("Grace timer is less than 0, resetting and next block");
-            this->AddBlock(this->current_block);
-            this->NextBlock();
-            this->UpdateClearedLines();
-            this->block_drop_grace = 5;
+            this->DropCurrentBlock();
         }
     }
 
@@ -113,9 +123,22 @@ void Tetris::Update()
         this->current_block.MoveRight();
     }
 
-    if (this->game->event_handler.ResetKey(SDLK_SPACE))
+    if (this->game->event_handler.ResetKey(SDLK_w))
     {
         this->current_block.RotateClockwise(board);
+    }
+    if (this->game->event_handler.ResetKey(SDLK_s) &&
+        !this->current_block.CheckIfLanded(board))
+    {
+        this->current_block.position.y++;
+    }
+    if (this->game->event_handler.ResetKey(SDLK_SPACE))
+    {
+        while (!this->current_block.CheckIfLanded(board))
+        {
+            this->current_block.position.y++;
+        }
+        DropCurrentBlock();
     }
 }
 
@@ -127,7 +150,7 @@ void Tetris::Render(SDL_Renderer* renderer)
     {
         for (int y = 0; y < BOARD_HEIGHT; y++)
         {
-            SetDrawColor(this->board[y][x], renderer);
+            SetDrawColor(this->board[y][x]);
 
             block.x = (BLOCK_SIZE * x) + BLOCK_OFFSET_X;
             block.y = (BLOCK_SIZE * y) + BLOCK_OFFSET_Y;
@@ -147,7 +170,7 @@ void Tetris::Render(SDL_Renderer* renderer)
                 continue;
             }
 
-            SetDrawColor(this->current_block.GetShape()[iy][ix], renderer);
+            SetDrawColor(this->current_block.GetShape()[iy][ix]);
             block.x = (BLOCK_SIZE * ix) + BLOCK_OFFSET_X +
                       this->current_block.position.x * BLOCK_SIZE;
             block.y = (BLOCK_SIZE * iy) + BLOCK_OFFSET_Y +
@@ -158,6 +181,17 @@ void Tetris::Render(SDL_Renderer* renderer)
             SDL_RenderDrawRect(renderer, &block);
         }
     }
+
+    block.x = 600;
+    block.y = 40;
+    block.w = BLOCK_SIZE * 4;
+    block.h = BLOCK_SIZE * 4;
+
+    SetDrawColor(0);
+    SDL_RenderFillRect(renderer, &block);
+
+    block.w = BLOCK_SIZE;
+    block.h = BLOCK_SIZE;
 
     Tetromino next_block = this->block_queue.front();
 
@@ -170,7 +204,7 @@ void Tetris::Render(SDL_Renderer* renderer)
                 continue;
             }
 
-            SetDrawColor(next_block.GetShape()[iy][ix], renderer);
+            SetDrawColor(next_block.GetShape()[iy][ix]);
             block.x = (BLOCK_SIZE * ix) + 600;
             block.y = (BLOCK_SIZE * iy) + 40;
             SDL_RenderFillRect(renderer, &block);
@@ -221,7 +255,8 @@ void Tetris::UpdateClearedLines()
                 board[row][col] = 0;
                 Tetris::Render(this->game->renderer);
                 SDL_RenderPresent(this->game->renderer);
-                std::this_thread::sleep_for(std::chrono::milliseconds(25));
+                // std::this_thread::sleep_for(std::chrono::milliseconds(25));
+                SDL_Delay(25);
             }
             update_needed = true;
             cleared_line_indexes.push_back(row);

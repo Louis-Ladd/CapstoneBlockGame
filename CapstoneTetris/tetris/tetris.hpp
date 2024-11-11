@@ -22,13 +22,15 @@ class Tetris {
     Tetris();
     static Tetris* instance_ptr;
     int board[BOARD_HEIGHT][BOARD_WIDTH];
-    double block_drop_grace = 5;
+    double block_drop_grace = 1;
     double block_fall_cooldown = SDL_GetTicks();
     std::queue<Tetromino> block_queue;
     Game* game;
     Tetromino current_block = Tetromino::RandomTetromino();
-    void SetDrawColor(int block_state, SDL_Renderer* renderer);
+    void SetDrawColor(int block_state);
     void UpdateClearedLines();
+    void ResetGraceTimer();
+    void DropCurrentBlock();
 
   public:
     // Singleton
