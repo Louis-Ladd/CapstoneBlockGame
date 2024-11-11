@@ -74,10 +74,7 @@ void Tetris::SetDrawColor(int block_state)
     }
 }
 
-void Tetris::ResetGraceTimer()
-{
-    this->block_drop_grace = 0.5f;
-}
+void Tetris::ResetGraceTimer() { this->block_drop_grace = 0.5f; }
 
 void Tetris::DropCurrentBlock()
 {
@@ -85,13 +82,10 @@ void Tetris::DropCurrentBlock()
     this->NextBlock();
     this->UpdateClearedLines();
     ResetGraceTimer();
-
 }
 
 void Tetris::Update()
 {
-    LOG("Delta Time: %f", this->game->delta_time);
-    LOG("Grace Time: %f", this->block_drop_grace);
     if (SDL_GetTicks() - this->block_fall_cooldown >= 150 &&
         !this->current_block.CheckIfLanded(this->board))
     {

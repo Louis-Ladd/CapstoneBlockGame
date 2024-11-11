@@ -86,6 +86,8 @@ bool Tetromino::CheckIfLanded(int (&board)[BOARD_HEIGHT][BOARD_WIDTH])
     return false;
 }
 
+// TODO: Wall kicks are currently not supported
+//  makes rotation feel quite stiff
 bool Tetromino::CheckValidRotation(int board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     int rotated_block[4][4];
@@ -114,7 +116,7 @@ bool Tetromino::CheckValidRotation(int board[BOARD_HEIGHT][BOARD_WIDTH])
 
                 if (board[pos.y + i - offset][(pos.x + j) + 1] > 0 ||
                     board[pos.y + i - offset][(pos.x + j) - 1] > 0 ||
-                    board[pos.y + i - offset][pos.x + j] > 0) 
+                    board[pos.y + i - offset][pos.x + j] > 0)
                 {
                     valid = false;
                     break;
