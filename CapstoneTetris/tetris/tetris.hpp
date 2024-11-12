@@ -3,23 +3,32 @@
 #include "../game.hpp"
 #include "../tetromino/tetromino.hpp"
 #include "../tetromino/tetrominos.hpp"
+#include <SDL.h>
 #include <SDL_keycode.h>
 #include <SDL_timer.h>
-#include <SDL.h>
+#include <math.h>
 #include <queue>
-#include <vector>
 
 // Standard tetris is 10 wide and 20 high
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
 
-enum GAME_STATES { paused, running, end };
+enum GAME_STATES
+{
+    paused,
+    running,
+    end
+};
 
-class Tetris {
+class Tetris
+{
   private:
     Tetris();
     static Tetris* instance_ptr;
     Uint8 board[BOARD_HEIGHT][BOARD_WIDTH];
+    int score;
+    int level = 1;
+    int lines = 0;
     double block_drop_grace = 1;
     double block_fall_cooldown = SDL_GetTicks();
     std::queue<Tetromino> block_queue;
@@ -29,11 +38,14 @@ class Tetris {
     void UpdateClearedLines();
     void ResetGraceTimer();
     void DropCurrentBlock();
+    void UpdateLevel();
 
   public:
     // Singleton
-    static Tetris* GetInstance() {
-        if (instance_ptr == nullptr) {
+    static Tetris* GetInstance()
+    {
+        if (instance_ptr == nullptr)
+        {
             instance_ptr = new Tetris();
         }
 

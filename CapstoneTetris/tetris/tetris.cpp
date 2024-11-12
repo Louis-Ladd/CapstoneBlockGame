@@ -1,5 +1,6 @@
 #include "tetris.hpp"
 #include "../log.hpp"
+#include <iostream>
 
 Tetris* Tetris::instance_ptr = nullptr;
 
@@ -62,7 +63,7 @@ void Tetris::SetDrawColor(int block_state)
     }
 }
 
-void Tetris::ResetGraceTimer() { this->block_drop_grace = 0.5f; }
+void Tetris::ResetGraceTimer() { this->block_drop_grace = 0.5f + level / 4.0f; }
 
 void Tetris::DropCurrentBlock()
 {
@@ -74,7 +75,8 @@ void Tetris::DropCurrentBlock()
 
 void Tetris::Update()
 {
-    if (SDL_GetTicks() - this->block_fall_cooldown >= 150 &&
+    LOG("Level: %i Score: %i", this->level, this->score);
+    if (SDL_GetTicks() - this->block_fall_cooldown >= (200 - pow(level, 2)) &&
         !this->current_block.CheckIfLanded(this->board))
     {
         this->current_block.MoveDown();
@@ -127,7 +129,8 @@ void Tetris::Update()
 void Tetris::Render(SDL_Renderer* renderer)
 {
     // Draw game elements
-    SDL_Rect block = {BLOCK_OFFSET_X, BLOCK_OFFSET_Y, BOARD_WIDTH * BLOCK_SIZE, BOARD_HEIGHT * BLOCK_SIZE};
+    SDL_Rect block = {BLOCK_OFFSET_X, BLOCK_OFFSET_Y, BOARD_WIDTH * BLOCK_SIZE,
+                      BOARD_HEIGHT * BLOCK_SIZE};
 
     SetDrawColor(0);
     SDL_RenderFillRect(renderer, &block);
@@ -140,10 +143,9 @@ void Tetris::Render(SDL_Renderer* renderer)
     SetDrawColor(0);
     SDL_RenderFillRect(renderer, &block);
 
-
     block.w = BLOCK_SIZE;
     block.h = BLOCK_SIZE;
-    
+
     // Draw Tetrominos
 
     for (int x = 0; x < BOARD_WIDTH; x++)
@@ -186,7 +188,7 @@ void Tetris::Render(SDL_Renderer* renderer)
             SDL_RenderDrawRect(renderer, &block);
         }
     }
-    
+
     Tetromino next_block = this->block_queue.front();
 
     for (int ix = 0; ix < 4; ix++)
@@ -234,14 +236,18 @@ void Tetris::AddBlock(Tetromino tetromino)
     }
 }
 
+void Tetris::UpdateLevel()
+{
+    if (lines % 10 == 0)
+    {
+        level++;
+    }
+}
+
 void Tetris::UpdateClearedLines()
 {
     bool update_needed = false;
-
-    std::vector<int> cleared_line_indexes;
-    // There can only be BOARD_HEIGHT number of lines cleared,
-    // this prevents redundant reallocation.
-    cleared_line_indexes.resize(BOARD_HEIGHT);
+    bool cleared_line_indexes[BOARD_HEIGHT] = {false};
 
     for (int row = 0; row < BOARD_HEIGHT; row++)
     {
@@ -256,7 +262,7 @@ void Tetris::UpdateClearedLines()
                 SDL_Delay(25);
             }
             update_needed = true;
-            cleared_line_indexes.push_back(row);
+            cleared_line_indexes[row] = true;
         }
     }
 
@@ -265,9 +271,15 @@ void Tetris::UpdateClearedLines()
         return;
     }
 
-    for (int index : cleared_line_indexes)
+    int count = 0;
+    for (int i = 0; i < BOARD_HEIGHT; i++)
     {
-        for (int relative_row = index; relative_row > 0; relative_row--)
+        if (!cleared_line_indexes[i])
+        {
+            continue;
+        }
+        count++;
+        for (int relative_row = i; relative_row > 0; relative_row--)
         {
             std::copy(board[relative_row - 1],
                       board[relative_row - 1] + BOARD_WIDTH,
@@ -275,6 +287,23 @@ void Tetris::UpdateClearedLines()
         }
         memset(board[0], 0, sizeof(board[0]));
     }
+
+    this->lines += count;
+
+    switch (count)
+    {
+        case 1:
+            this->score += 100 * this->level;
+        case 2:
+            this->score += 200 * this->level;
+        case 3:
+            this->score += 300 * this->level;
+        case 4:
+            this->score += 800 * this->level;
+        default:
+            this->score += 100;
+    }
+    this->UpdateLevel();
 }
 
 Uint8 (*Tetris::GetBoard())[BOARD_WIDTH] { return this->board; }

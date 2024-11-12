@@ -2,8 +2,10 @@
 //
 
 #include "main.hpp"
+#include "log.hpp"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     std::cout << "Game starting..." << std::endl;
 
     Game* game = Game::GetInstance();
@@ -11,7 +13,8 @@ int main(int argc, char* argv[]) {
 
     Uint32 last_frame_time = SDL_GetTicks();
 
-    while (game->GetRunning()) {
+    while (game->GetRunning())
+    {
 
         Uint32 current_frame_time = SDL_GetTicks();
         game->delta_time = (current_frame_time - last_frame_time) / 1000.0f;
