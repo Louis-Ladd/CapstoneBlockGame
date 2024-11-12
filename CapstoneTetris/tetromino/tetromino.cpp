@@ -34,7 +34,7 @@ Tetromino Tetromino::RandomTetromino()
 }
 
 bool Tetromino::CheckMoveHorizontally(int direction,
-                                      int (&board)[BOARD_HEIGHT][BOARD_WIDTH])
+                                      Uint8 (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 {
     for (int i = 0; i < 4; i++)
     {
@@ -61,7 +61,7 @@ bool Tetromino::CheckMoveHorizontally(int direction,
     return true;
 }
 
-bool Tetromino::CheckIfLanded(int (&board)[BOARD_HEIGHT][BOARD_WIDTH])
+bool Tetromino::CheckIfLanded(Uint8 (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 {
     for (int i = 0; i < 4; i++)
     {
@@ -88,15 +88,16 @@ bool Tetromino::CheckIfLanded(int (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 
 // TODO: Wall kicks are currently not supported
 //  makes rotation feel quite stiff
-bool Tetromino::CheckValidRotation(int board[BOARD_HEIGHT][BOARD_WIDTH])
+bool Tetromino::CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     int rotated_block[4][4];
     std::copy(&shapes[(rotation + 1) % 4][0][0],
               &shapes[(rotation + 1) % 4][0][0] + 4 * 4, &rotated_block[0][0]);
 
     Vector2 pos = this->position;
+    
 
-    for (int offset = 0; offset <= 4; offset++)
+    for (int offset_y = 0; offset_y <= 4; offset_y++)
     {
         bool valid = true;
 
@@ -108,15 +109,13 @@ bool Tetromino::CheckValidRotation(int board[BOARD_HEIGHT][BOARD_WIDTH])
                 {
                     continue;
                 }
-                if ((pos.x + j) - 1 < 0 || (pos.x + j) + 1 >= BOARD_WIDTH)
+                if ((pos.x + j) < 0 || (pos.x + j) >= BOARD_WIDTH)
                 {
                     valid = false;
                     break;
                 }
 
-                if (board[pos.y + i - offset][(pos.x + j) + 1] > 0 ||
-                    board[pos.y + i - offset][(pos.x + j) - 1] > 0 ||
-                    board[pos.y + i - offset][pos.x + j] > 0)
+                if (board[pos.y + i - offset_y][(pos.x + j)] > 0)
                 {
                     valid = false;
                     break;
@@ -129,14 +128,14 @@ bool Tetromino::CheckValidRotation(int board[BOARD_HEIGHT][BOARD_WIDTH])
         }
         if (valid)
         {
-            this->position.y -= offset;
+            this->position.y -= offset_y;
             return true;
         }
     }
     return false;
 }
 
-void Tetromino::RotateClockwise(int board[BOARD_HEIGHT][BOARD_WIDTH])
+void Tetromino::RotateClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     if (!this->CheckValidRotation(board))
     {
@@ -145,7 +144,7 @@ void Tetromino::RotateClockwise(int board[BOARD_HEIGHT][BOARD_WIDTH])
     this->rotation = (this->rotation + 1) % 4;
 }
 
-void Tetromino::RotateCounterClockwise(int board[BOARD_HEIGHT][BOARD_WIDTH]) {}
+void Tetromino::RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]) {}
 
 void Tetromino::MoveLeft() { this->position.x--; }
 

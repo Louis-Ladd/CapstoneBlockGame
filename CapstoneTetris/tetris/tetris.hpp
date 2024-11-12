@@ -8,8 +8,6 @@
 #include <SDL.h>
 #include <queue>
 #include <vector>
-#include <chrono>
-#include <thread>
 
 // Standard tetris is 10 wide and 20 high
 #define BOARD_HEIGHT 20
@@ -21,7 +19,7 @@ class Tetris {
   private:
     Tetris();
     static Tetris* instance_ptr;
-    int board[BOARD_HEIGHT][BOARD_WIDTH];
+    Uint8 board[BOARD_HEIGHT][BOARD_WIDTH];
     double block_drop_grace = 1;
     double block_fall_cooldown = SDL_GetTicks();
     std::queue<Tetromino> block_queue;
@@ -46,5 +44,5 @@ class Tetris {
     void AddBlock(Tetromino tetromino);
     void Update();
     void Render(SDL_Renderer* renderer);
-    int (*GetBoard())[BOARD_WIDTH];
+    Uint8 (*GetBoard())[BOARD_WIDTH];
 };

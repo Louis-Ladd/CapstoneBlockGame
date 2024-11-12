@@ -4,6 +4,7 @@
 
 # !!! If you're still having issues building after pointing to the built SDL2-devel-2.30.8-VC directory
 # The exe requires that SDL2.DLL (x64 version) is in the same directory.
+set(CMAKE_BUILD_TYPE Debug)
 
 find_package(SDL2 REQUIRED)
 

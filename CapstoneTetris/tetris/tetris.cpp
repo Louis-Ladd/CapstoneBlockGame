@@ -9,27 +9,15 @@ Tetris* Tetris::instance_ptr = nullptr;
 
 Tetris::Tetris()
 {
-    /*for (int i = 0; i < 3; i++)
+    block_queue.push(TShape());
+    for (int i = 0; i < 3; i++)
     {
         this->block_queue.push(Tetromino::RandomTetromino());
-    }*/
-
-    this->block_queue.push(IShape());
-    this->block_queue.push(JShape());
-    this->block_queue.push(LShape());
-    this->block_queue.push(OShape());
-    this->block_queue.push(SShape());
-    this->block_queue.push(TShape());
-    this->block_queue.push(ZShape());
+    }
 
     this->NextBlock();
 
     memset(board, 0, sizeof(board));
-
-    for (int i = 0; i < 20; i++)
-    {
-        board[i][0] = (i % 7) + 1;
-    }
 
     this->game = Game::GetInstance();
 
@@ -138,12 +126,35 @@ void Tetris::Update()
 
 void Tetris::Render(SDL_Renderer* renderer)
 {
-    SDL_Rect block = {0, 0, BLOCK_SIZE, BLOCK_SIZE};
+    // Draw game elements
+    SDL_Rect block = {BLOCK_OFFSET_X, BLOCK_OFFSET_Y, BOARD_WIDTH * BLOCK_SIZE, BOARD_HEIGHT * BLOCK_SIZE};
+
+    SetDrawColor(0);
+    SDL_RenderFillRect(renderer, &block);
+
+    block.x = 600;
+    block.y = 40;
+    block.w = BLOCK_SIZE * 4;
+    block.h = BLOCK_SIZE * 4;
+
+    SetDrawColor(0);
+    SDL_RenderFillRect(renderer, &block);
+
+
+    block.w = BLOCK_SIZE;
+    block.h = BLOCK_SIZE;
+    
+    // Draw Tetrominos
 
     for (int x = 0; x < BOARD_WIDTH; x++)
     {
         for (int y = 0; y < BOARD_HEIGHT; y++)
         {
+            if (this->board[y][x] == 0)
+            {
+                continue;
+            }
+
             SetDrawColor(this->board[y][x]);
 
             block.x = (BLOCK_SIZE * x) + BLOCK_OFFSET_X;
@@ -175,18 +186,7 @@ void Tetris::Render(SDL_Renderer* renderer)
             SDL_RenderDrawRect(renderer, &block);
         }
     }
-
-    block.x = 600;
-    block.y = 40;
-    block.w = BLOCK_SIZE * 4;
-    block.h = BLOCK_SIZE * 4;
-
-    SetDrawColor(0);
-    SDL_RenderFillRect(renderer, &block);
-
-    block.w = BLOCK_SIZE;
-    block.h = BLOCK_SIZE;
-
+    
     Tetromino next_block = this->block_queue.front();
 
     for (int ix = 0; ix < 4; ix++)
@@ -237,19 +237,22 @@ void Tetris::AddBlock(Tetromino tetromino)
 void Tetris::UpdateClearedLines()
 {
     bool update_needed = false;
+
     std::vector<int> cleared_line_indexes;
+    // There can only be BOARD_HEIGHT number of lines cleared,
+    // this prevents redundant reallocation.
+    cleared_line_indexes.resize(BOARD_HEIGHT);
 
     for (int row = 0; row < BOARD_HEIGHT; row++)
     {
         if (std::all_of(board[row], board[row] + BOARD_WIDTH,
-                        [](int i) { return i > 0; }))
+                        [](Uint8 i) { return i > 0; }))
         {
             for (int col = 0; col < BOARD_WIDTH; col++)
             {
                 board[row][col] = 0;
                 Tetris::Render(this->game->renderer);
                 SDL_RenderPresent(this->game->renderer);
-                // std::this_thread::sleep_for(std::chrono::milliseconds(25));
                 SDL_Delay(25);
             }
             update_needed = true;
@@ -274,4 +277,4 @@ void Tetris::UpdateClearedLines()
     }
 }
 
-int (*Tetris::GetBoard())[BOARD_WIDTH] { return this->board; }
+Uint8 (*Tetris::GetBoard())[BOARD_WIDTH] { return this->board; }
