@@ -95,7 +95,6 @@ bool Tetromino::CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
               &shapes[(rotation + 1) % 4][0][0] + 4 * 4, &rotated_block[0][0]);
 
     Vector2 pos = this->position;
-    
 
     for (int offset_y = 0; offset_y <= 4; offset_y++)
     {
@@ -109,7 +108,8 @@ bool Tetromino::CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
                 {
                     continue;
                 }
-                if ((pos.x + j) < 0 || (pos.x + j) >= BOARD_WIDTH)
+                if ((pos.x + j) < 0 || (pos.x + j) >= BOARD_WIDTH ||
+                    (pos.y + i - offset_y) >= BOARD_HEIGHT)
                 {
                     valid = false;
                     break;
@@ -144,7 +144,9 @@ void Tetromino::RotateClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
     this->rotation = (this->rotation + 1) % 4;
 }
 
-void Tetromino::RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]) {}
+void Tetromino::RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
+{
+}
 
 void Tetromino::MoveLeft() { this->position.x--; }
 

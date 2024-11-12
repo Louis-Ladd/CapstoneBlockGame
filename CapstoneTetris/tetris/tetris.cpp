@@ -76,7 +76,7 @@ void Tetris::DropCurrentBlock()
 void Tetris::Update()
 {
     LOG("Level: %i Score: %i", this->level, this->score);
-    if (SDL_GetTicks() - this->block_fall_cooldown >= (200 - pow(level, 2)) &&
+    if (SDL_GetTicks() - this->block_fall_cooldown >= (200 - (40 * level)) &&
         !this->current_block.CheckIfLanded(this->board))
     {
         this->current_block.MoveDown();
