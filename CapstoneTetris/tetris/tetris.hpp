@@ -2,7 +2,6 @@
 
 #include "../game.hpp"
 #include "../tetromino/tetromino.hpp"
-#include "../tetromino/tetrominos.hpp"
 #include <SDL.h>
 #include <SDL_keycode.h>
 #include <SDL_timer.h>
@@ -34,7 +33,7 @@ class Tetris
     std::queue<Tetromino> block_queue;
     Game* game;
     Tetromino current_block = Tetromino::RandomTetromino();
-    void SetDrawColor(int block_state);
+    void SetDrawColor(int block_state, Uint8 tint = 0);
     void UpdateClearedLines();
     void ResetGraceTimer();
     void DropCurrentBlock();

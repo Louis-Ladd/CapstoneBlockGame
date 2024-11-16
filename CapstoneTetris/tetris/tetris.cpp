@@ -1,6 +1,5 @@
 #include "tetris.hpp"
 #include "../log.hpp"
-#include <iostream>
 
 Tetris* Tetris::instance_ptr = nullptr;
 
@@ -10,7 +9,6 @@ Tetris* Tetris::instance_ptr = nullptr;
 
 Tetris::Tetris()
 {
-    block_queue.push(TShape());
     for (int i = 0; i < 3; i++)
     {
         this->block_queue.push(Tetromino::RandomTetromino());
@@ -28,7 +26,7 @@ Tetris::Tetris()
     }
 }
 
-void Tetris::SetDrawColor(int block_state)
+inline void Tetris::SetDrawColor(int block_state, Uint8 tint)
 {
     SDL_Renderer* renderer = this->game->renderer;
     switch (block_state)
@@ -37,25 +35,31 @@ void Tetris::SetDrawColor(int block_state)
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); // Black
             break;
         case 1:
-            SDL_SetRenderDrawColor(renderer, 0, 255, 240, 0); // Cyan
+            SDL_SetRenderDrawColor(renderer, 0, 255 - tint, 240 - tint,
+                                   0); // Cyan
             break;
         case 2:
-            SDL_SetRenderDrawColor(renderer, 175, 0, 239, 0); // Purple
+            SDL_SetRenderDrawColor(renderer, 175 - tint, 0, 239 - tint,
+                                   0); // Purple
             break;
         case 3:
-            SDL_SetRenderDrawColor(renderer, 255, 188, 0, 0); // Orange
+            SDL_SetRenderDrawColor(renderer, 255 - tint, 188 - tint, 0,
+                                   0); // Orange
             break;
         case 4:
-            SDL_SetRenderDrawColor(renderer, 0, 111, 255, 0); // Blue
+            SDL_SetRenderDrawColor(renderer, 0, 111 - tint, 255 - tint,
+                                   0); // Blue
             break;
         case 5:
-            SDL_SetRenderDrawColor(renderer, 0, 245, 41, 0); // Green
+            SDL_SetRenderDrawColor(renderer, 0, 245 - tint, 41 - tint,
+                                   0); // Green
             break;
         case 6:
-            SDL_SetRenderDrawColor(renderer, 238, 0, 24, 0); // Red
+            SDL_SetRenderDrawColor(renderer, 238 - tint, 0, 24, 0); // Red
             break;
         case 7:
-            SDL_SetRenderDrawColor(renderer, 246, 246, 0, 0); // Yellow
+            SDL_SetRenderDrawColor(renderer, 246 - tint, 246 - tint, 0,
+                                   0); // Yellow
             break;
         default:
             SDL_GetRenderDrawColor(renderer, 0, 0, 0, 0);
@@ -76,7 +80,8 @@ void Tetris::DropCurrentBlock()
 void Tetris::Update()
 {
     LOG("Level: %i Score: %i", this->level, this->score);
-    if (SDL_GetTicks() - this->block_fall_cooldown >= (200 - (40 * level)) &&
+    if (SDL_GetTicks() - this->block_fall_cooldown >=
+            pow(-0.4 * this->level, 3) + 400 &&
         !this->current_block.CheckIfLanded(this->board))
     {
         this->current_block.MoveDown();
@@ -111,10 +116,16 @@ void Tetris::Update()
     {
         this->current_block.RotateClockwise(board);
     }
-    if (this->game->event_handler.ResetKey(SDLK_s) &&
-        !this->current_block.CheckIfLanded(board))
+    if (this->game->event_handler.IsKeyDown(SDLK_s) &&
+        !this->current_block.CheckIfLanded(board) &&
+        SDL_GetTicks() - this->block_fall_cooldown >= 50)
     {
         this->current_block.position.y++;
+        this->block_fall_cooldown = SDL_GetTicks();
+    }
+    if (this->game->event_handler.ResetKey(SDLK_p))
+    {
+        this->level++;
     }
     if (this->game->event_handler.ResetKey(SDLK_SPACE))
     {
@@ -146,7 +157,7 @@ void Tetris::Render(SDL_Renderer* renderer)
     block.w = BLOCK_SIZE;
     block.h = BLOCK_SIZE;
 
-    // Draw Tetrominos
+    // Draw Board Tetrominos
 
     for (int x = 0; x < BOARD_WIDTH; x++)
     {
@@ -168,6 +179,7 @@ void Tetris::Render(SDL_Renderer* renderer)
         }
     }
 
+    // Current Block
     for (int ix = 0; ix < 4; ix++)
     {
         for (int iy = 0; iy < 4; iy++)
