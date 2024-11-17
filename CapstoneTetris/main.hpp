@@ -5,6 +5,7 @@
 
 #include "game.hpp"
 #include "tetris/tetris.hpp"
+#include "mainmenu/mainmenu.hpp"
 #include <SDL.h>
 #include <iostream>
 

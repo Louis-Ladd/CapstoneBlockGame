@@ -2,6 +2,11 @@
 #include "game.hpp"
 #include <SDL_keycode.h>
 
+void GameEventHandler::SetMouseCallback(const std::function<void(SDL_Point)>& callback_func)
+{
+    this->callback_func = callback_func;
+}
+
 void GameEventHandler::UpdatePressedKeys(SDL_Event event) {
     int keycode = event.key.keysym.sym;
 
@@ -40,6 +45,14 @@ void GameEventHandler::HandleEvent(Game* game) {
                 break;
             case SDL_KEYUP:
                 this->UpdatePressedKeys(game->window_event);
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (!callback_func)
+                {
+                    return;
+                }
+                SDL_Point mouse_pos = {game->window_event.motion.x, game->window_event.motion.x};
+                this->callback_func(mouse_pos);
                 break;
         }
     }

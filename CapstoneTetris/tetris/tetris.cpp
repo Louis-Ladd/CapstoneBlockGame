@@ -67,7 +67,7 @@ inline void Tetris::SetDrawColor(int block_state, Uint8 tint)
     }
 }
 
-void Tetris::ResetGraceTimer() { this->block_drop_grace = 0.5f + level / 4.0f; }
+void Tetris::ResetGraceTimer() { this->block_drop_grace = 0.3; }
 
 void Tetris::DropCurrentBlock()
 {
@@ -81,7 +81,7 @@ void Tetris::Update()
 {
     LOG("Level: %i Score: %i", this->level, this->score);
     if (SDL_GetTicks() - this->block_fall_cooldown >=
-            pow(-0.4 * this->level, 3) + 400 &&
+            600 / (1+0.3f * (this->level + 2)) &&
         !this->current_block.CheckIfLanded(this->board))
     {
         this->current_block.MoveDown();
@@ -258,6 +258,11 @@ void Tetris::UpdateLevel()
 
 void Tetris::UpdateClearedLines()
 {
+    if (std::accumulate(std::begin(this->board[0]), std::end(this->board[0]), 0, std::plus<int>()) > 0)
+    {
+        // TODO: Game Over
+        ResetBoard();
+    }
     bool update_needed = false;
     bool cleared_line_indexes[BOARD_HEIGHT] = {false};
 
@@ -306,16 +311,25 @@ void Tetris::UpdateClearedLines()
     {
         case 1:
             this->score += 100 * this->level;
+            break;
         case 2:
             this->score += 200 * this->level;
+            break;
         case 3:
             this->score += 300 * this->level;
+            break;
         case 4:
             this->score += 800 * this->level;
+            break;
         default:
             this->score += 100;
     }
     this->UpdateLevel();
+}
+
+void Tetris::ResetBoard()
+{
+    memset(board, 0, sizeof(this->board));
 }
 
 Uint8 (*Tetris::GetBoard())[BOARD_WIDTH] { return this->board; }

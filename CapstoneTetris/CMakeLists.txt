@@ -16,7 +16,7 @@ endif()
 
 
 # Add source to this project's executable.
-add_executable (CapstoneTetris "main.cpp" "main.hpp" "game.cpp" "game.hpp" "tetris/tetris.hpp" "tetris/tetris.cpp" "utils/vector2.hpp" "tetromino/tetrominos.hpp" "tetromino/tetromino.cpp" "input.cpp" "input.hpp" "UI/UIManager.cpp" "UI/UIManager.hpp")
+add_executable (CapstoneTetris "main.cpp" "main.hpp" "game.cpp" "game.hpp" "tetris/tetris.hpp" "tetris/tetris.cpp" "utils/vector2.hpp" "tetromino/tetrominos.hpp" "tetromino/tetromino.cpp" "input.cpp" "input.hpp" "UI/UIManager.cpp" "UI/UIManager.hpp" "mainmenu/mainmenu.cpp" "UI/UIElement.cpp")
 
 target_link_libraries(CapstoneTetris SDL2::SDL2 SDL2::SDL2main)
 

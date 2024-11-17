@@ -6,6 +6,7 @@
 #include <SDL_keycode.h>
 #include <SDL_timer.h>
 #include <math.h>
+#include <numeric>
 #include <queue>
 
 // Standard tetris is 10 wide and 20 high
@@ -25,7 +26,7 @@ class Tetris
     Tetris();
     static Tetris* instance_ptr;
     Uint8 board[BOARD_HEIGHT][BOARD_WIDTH];
-    int score;
+    int score = 0;
     int level = 1;
     int lines = 0;
     double block_drop_grace = 1;
@@ -38,6 +39,7 @@ class Tetris
     void ResetGraceTimer();
     void DropCurrentBlock();
     void UpdateLevel();
+    void ResetBoard();
 
   public:
     // Singleton
