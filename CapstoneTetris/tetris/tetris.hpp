@@ -13,18 +13,20 @@
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
 
-enum GAME_STATES
+enum GameState
 {
-    paused,
-    running,
-    end
+    Paused,
+    Running,
+    Lost,
+    Quit,
 };
 
 class Tetris
 {
-  private:
+private:
     Tetris();
     static Tetris* instance_ptr;
+    GameState game_state;
     Uint8 board[BOARD_HEIGHT][BOARD_WIDTH];
     int score = 0;
     int level = 1;
@@ -41,7 +43,7 @@ class Tetris
     void UpdateLevel();
     void ResetBoard();
 
-  public:
+public:
     // Singleton
     static Tetris* GetInstance()
     {
@@ -57,5 +59,6 @@ class Tetris
     void AddBlock(Tetromino tetromino);
     void Update();
     void Render(SDL_Renderer* renderer);
+    GameState GetGameState() { return game_state; };
     Uint8 (*GetBoard())[BOARD_WIDTH];
 };

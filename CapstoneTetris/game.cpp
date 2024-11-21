@@ -16,8 +16,8 @@ Game::Game()
 
     LOG("Creating window...");
     this->window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_CENTERED,
-                                    SDL_WINDOWPOS_CENTERED, SCREEN_HEIGHT,
-                                    SCREEN_WIDTH, 0);
+                                    SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,
+                                    SCREEN_HEIGHT, 0);
 
     if (!this->window)
     {
@@ -37,6 +37,13 @@ Game::Game()
     {
         LOG("Failed to create SDL renderer");
         this->renderer = nullptr;
+        return;
+    }
+
+    LOG("Initializing Fonts");
+    if (TTF_Init() < 0)
+    {
+        LOG("Unable to initialize fonts");
         return;
     }
 

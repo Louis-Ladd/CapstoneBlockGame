@@ -7,6 +7,7 @@
 set(CMAKE_BUILD_TYPE Debug)
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
 if(WIN32)
     include_directories(${SDL2_INCLUDE_DIRS})  # For Windows
@@ -16,7 +17,7 @@ endif()
 
 
 # Add source to this project's executable.
-add_executable (CapstoneTetris "main.cpp" "main.hpp" "game.cpp" "game.hpp" "tetris/tetris.hpp" "tetris/tetris.cpp" "utils/vector2.hpp" "tetromino/tetrominos.hpp" "tetromino/tetromino.cpp" "input.cpp" "input.hpp" "UI/UIManager.cpp" "UI/UIManager.hpp" "mainmenu/mainmenu.cpp" "UI/UIElement.cpp")
+add_executable (CapstoneTetris "main.cpp" "main.hpp" "game.cpp" "game.hpp" "tetris/tetris.hpp" "tetris/tetris.cpp" "utils/vector2.hpp" "tetromino/tetrominos.hpp" "tetromino/tetromino.cpp" "input.cpp" "input.hpp" "UI/UIManager.cpp" "UI/UIManager.hpp" "mainmenu/mainmenu.cpp" "UI/UIElement.cpp" "UI/UIRect.hpp" "UI/UIRect.cpp" "UI/UIButton.hpp" "UI/UIButton.cpp")
 
 target_link_libraries(CapstoneTetris SDL2::SDL2 SDL2::SDL2main)
 

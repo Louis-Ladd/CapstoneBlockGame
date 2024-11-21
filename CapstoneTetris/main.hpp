@@ -4,8 +4,8 @@
 #pragma once
 
 #include "game.hpp"
-#include "tetris/tetris.hpp"
 #include "mainmenu/mainmenu.hpp"
+#include "tetris/tetris.hpp"
 #include <SDL.h>
 #include <iostream>
 

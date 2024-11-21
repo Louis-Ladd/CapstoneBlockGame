@@ -9,7 +9,7 @@
 
 class Tetromino
 {
-  public:
+public:
     Vector2 position = {0, 0};
     int shapes[4][4][4];
     int rotation = 0;
@@ -25,8 +25,8 @@ class Tetromino
     void RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
     static Tetromino RandomTetromino();
 
-  protected:
-      inline bool CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
+protected:
+    inline bool CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
     Tetromino()
     {
         for (int i = 0; i < 4; i++)

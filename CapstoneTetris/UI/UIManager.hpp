@@ -2,18 +2,21 @@
 
 #include "UIElement.hpp"
 #include <SDL.h>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 class UIManager
 {
-  public:
+public:
     UIManager(SDL_Renderer* renderer);
-    void AddUIElement(std::string name, UIElement element);
+    ~UIManager();
+    void AddUIElement(std::string name, UIElement* element);
     void RemoveUIElement(int id);
     void Render();
-  private:
+    void InvokeClickEvents(SDL_Point click_point);
+
+private:
     SDL_Renderer* renderer;
     // TODO: TTF Font pointer (I don't have the lib setup yet) TTF_Font* font;
-    std::unordered_map<std::string, UIElement> elements;
+    std::unordered_map<std::string, UIElement*> elements;
 };
