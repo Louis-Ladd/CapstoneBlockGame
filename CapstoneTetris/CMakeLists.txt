@@ -19,7 +19,7 @@ endif()
 # Add source to this project's executable.
 add_executable (CapstoneTetris "main.cpp" "main.hpp" "game.cpp" "game.hpp" "tetris/tetris.hpp" "tetris/tetris.cpp" "utils/vector2.hpp" "tetromino/tetrominos.hpp" "tetromino/tetromino.cpp" "input.cpp" "input.hpp" "UI/UIManager.cpp" "UI/UIManager.hpp" "mainmenu/mainmenu.cpp" "UI/UIElement.cpp" "UI/UIRect.hpp" "UI/UIRect.cpp" "UI/UIButton.hpp" "UI/UIButton.cpp")
 
-target_link_libraries(CapstoneTetris SDL2::SDL2 SDL2::SDL2main)
+target_link_libraries(CapstoneTetris SDL2::SDL2 SDL2::SDL2main SDL2_ttf)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET CapstoneTetris PROPERTY CXX_STANDARD 20)
