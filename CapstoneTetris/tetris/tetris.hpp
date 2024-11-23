@@ -2,6 +2,8 @@
 
 #include "../game.hpp"
 #include "../tetromino/tetromino.hpp"
+#include "../UI/UIManager.hpp"
+#include "../UI/UILabeledButton.hpp"
 #include <SDL.h>
 #include <SDL_keycode.h>
 #include <SDL_timer.h>
@@ -25,6 +27,8 @@ class Tetris
 {
 private:
     Tetris();
+    Game* game;
+    UIManager ui_manager;
     static Tetris* instance_ptr;
     GameState game_state;
     Uint8 board[BOARD_HEIGHT][BOARD_WIDTH];
@@ -34,7 +38,6 @@ private:
     double block_drop_grace = 1;
     double block_fall_cooldown = SDL_GetTicks();
     std::queue<Tetromino> block_queue;
-    Game* game;
     Tetromino current_block = Tetromino::RandomTetromino();
     void SetDrawColor(int block_state, Uint8 tint = 0);
     void UpdateClearedLines();
@@ -42,6 +45,8 @@ private:
     void DropCurrentBlock();
     void UpdateLevel();
     void ResetBoard();
+    void BuildUI();
+    void HandleMouseClick(SDL_Point point);
 
 public:
     // Singleton

@@ -3,8 +3,16 @@
 #include "UIButton.hpp"
 #include "UIElement.hpp"
 #include "UIRect.hpp"
+#include "UILabeledButton.hpp"
 
-UIManager::UIManager(SDL_Renderer* renderer) { this->renderer = renderer; }
+UIManager::UIManager(SDL_Renderer* renderer) 
+{ 
+    this->renderer = renderer;
+    this->default_fonts[0] = TTF_OpenFont("game_over.ttf", 24);
+    this->default_fonts[1] = TTF_OpenFont("game_over.ttf", 32);
+    this->default_fonts[2] = TTF_OpenFont("game_over.ttf", 64);
+    this->default_fonts[3] = TTF_OpenFont("game_over.ttf", 128);
+}
 
 UIManager::~UIManager()
 {
@@ -33,6 +41,15 @@ void UIManager::InvokeClickEvents(SDL_Point mouse_point)
                     LOG("Is rect");
                 break;
             }
+            case UIElementType::LabeledButton:
+            {
+                UILabeledButton* labeled_button = dynamic_cast<UILabeledButton*>(element);
+                if (labeled_button->button->CheckIfPointIn(mouse_point))
+                {
+                    labeled_button->button->ExecuteIfClicked(mouse_point);
+                }
+                break;
+            }
             case UIElementType::Button:
             {
                 UIButton* button = dynamic_cast<UIButton*>(element);
@@ -48,6 +65,12 @@ void UIManager::InvokeClickEvents(SDL_Point mouse_point)
                 LOG("GenericElement not implemented...");
                 break;
             }
+
+            default:
+            {
+                // Just do nothing
+                break;
+            }
         }
     }
 }
@@ -58,4 +81,14 @@ void UIManager::Render()
     {
         element->Render(renderer);
     }
+}
+
+TTF_Font* UIManager::GetDefaultFont(int id) const
+{
+    if (id >= 4)
+    {
+        return nullptr;
+    }
+
+    return this->default_fonts[id];
 }

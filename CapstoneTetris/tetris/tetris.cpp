@@ -7,8 +7,29 @@ Tetris* Tetris::instance_ptr = nullptr;
 #define BLOCK_OFFSET_X 150
 #define BLOCK_OFFSET_Y 25
 
-Tetris::Tetris()
+void Tetris::BuildUI()
 {
+    this->game->event_handler.SetMouseCallback([this](SDL_Point point)
+        { HandleMouseClick(point); });
+
+	SDL_Color white = { 255, 255, 255, 255 };
+	SDL_Color dark_cyan = { 0, 171, 196, 255 };
+
+    UILabeledButton* play_button = new UILabeledButton(500, 350, 100, 100, white, dark_cyan, this->ui_manager.GetDefaultFont(2), this->game->renderer, "Next");
+    play_button->button->SetOnClickFunction([this](void) { this->NextBlock(); });
+    this->ui_manager.AddUIElement("Next", play_button);
+
+}
+
+void Tetris::HandleMouseClick(SDL_Point point)
+{
+    this->ui_manager.InvokeClickEvents(point);
+}
+
+Tetris::Tetris() : game(Game::GetInstance()), ui_manager(this->game->renderer)
+{
+    BuildUI();
+
     for (int i = 0; i < 3; i++)
     {
         this->block_queue.push(Tetromino::RandomTetromino());
@@ -17,8 +38,6 @@ Tetris::Tetris()
     this->NextBlock();
 
     memset(board, 0, sizeof(board));
-
-    this->game = Game::GetInstance();
 
     if (this->game == nullptr)
     {
@@ -81,6 +100,7 @@ void Tetris::DropCurrentBlock()
 
 void Tetris::Update()
 {
+
     if (SDL_GetTicks() - this->block_fall_cooldown >=
             600 / (1 + 0.3f * (this->level + 2)) &&
         !this->current_block.CheckIfLanded(this->board))
@@ -222,6 +242,8 @@ void Tetris::Render(SDL_Renderer* renderer)
             SDL_RenderDrawRect(renderer, &block);
         }
     }
+
+    this->ui_manager.Render();
 }
 
 void Tetris::NextBlock()

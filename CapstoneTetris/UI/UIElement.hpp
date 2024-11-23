@@ -7,7 +7,9 @@ enum class UIElementType
 {
     GenericElement,
     Rect,
-    Button
+    Button,
+    Label,
+    LabeledButton,
 };
 
 class UIElement
@@ -23,6 +25,8 @@ public:
     {
         this->position = new_pos;
     };
+    virtual void SetEnabled(bool new_value) { enabled = new_value; };
+
 
 protected:
     Vector2 position = {0, 0};

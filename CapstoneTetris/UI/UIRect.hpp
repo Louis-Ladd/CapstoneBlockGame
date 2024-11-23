@@ -10,6 +10,7 @@ private:
     SDL_Color color;
 
 public:
+    UIRect() {};
     UIRect(int x, int y, int w, int h);
     UIRect(int x, int y, int w, int h, SDL_Color color) : UIRect(x, y, w, h)
     {
