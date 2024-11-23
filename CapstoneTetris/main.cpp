@@ -2,14 +2,9 @@
 //
 
 #include "main.hpp"
-#include "log.hpp"
 
 int main(int argc, char* argv[])
 {
-    LOG("Hey there, I'm currently still implementing the main menu. \n"
-        "You can click around and see that I have a callback for my mouse "
-        "inputs :D\n"
-        "Please press x to continue to the game.");
     Game* game = Game::GetInstance();
 
     RunMainMenu(game->renderer, game);
