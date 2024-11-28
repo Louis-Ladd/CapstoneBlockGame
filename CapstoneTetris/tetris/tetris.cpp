@@ -1,5 +1,6 @@
 #include "tetris.hpp"
 #include "../log.hpp"
+#include <string>
 
 Tetris* Tetris::instance_ptr = nullptr;
 
@@ -10,15 +11,31 @@ Tetris* Tetris::instance_ptr = nullptr;
 void Tetris::BuildUI()
 {
     this->game->event_handler.SetMouseCallback([this](SDL_Point point)
-        { HandleMouseClick(point); });
+                                               { HandleMouseClick(point); });
 
-	SDL_Color white = { 255, 255, 255, 255 };
-	SDL_Color dark_cyan = { 0, 171, 196, 255 };
+    SDL_Color white = {255, 255, 255, 255};
+    SDL_Color dark_cyan = {0, 171, 196, 255};
 
-    UILabeledButton* play_button = new UILabeledButton(500, 350, 100, 100, white, dark_cyan, this->ui_manager.GetDefaultFont(2), this->game->renderer, "Next");
-    play_button->button->SetOnClickFunction([this](void) { this->NextBlock(); });
+    UILabel* level_label =
+        new UILabel(450, 180, this->ui_manager.GetDefaultFont(3),
+                    "Level: Not Set", white, this->game->renderer);
+
+    UILabel* score_label =
+        new UILabel(450, 225, this->ui_manager.GetDefaultFont(3),
+                    "Score: Not Set", white, this->game->renderer);
+
+    UILabeledButton* play_button = new UILabeledButton(
+        500, 350, 100, 100, white, dark_cyan,
+        this->ui_manager.GetDefaultFont(2), this->game->renderer, "Next");
+    play_button->button->SetOnClickFunction(
+        [this](void)
+        {
+            this->level++;
+            this->UpdateLevel();
+        });
     this->ui_manager.AddUIElement("Next", play_button);
-
+    this->ui_manager.AddUIElement("Level", level_label);
+    this->ui_manager.AddUIElement("Score", score_label);
 }
 
 void Tetris::HandleMouseClick(SDL_Point point)
@@ -28,7 +45,10 @@ void Tetris::HandleMouseClick(SDL_Point point)
 
 Tetris::Tetris() : game(Game::GetInstance()), ui_manager(this->game->renderer)
 {
-    BuildUI();
+    this->BuildUI();
+
+    this->UpdateLevel();
+    this->UpdateScore();
 
     for (int i = 0; i < 3; i++)
     {
@@ -273,10 +293,22 @@ void Tetris::AddBlock(Tetromino tetromino)
 
 void Tetris::UpdateLevel()
 {
-    if (lines % 10 == 0)
+    if (this->lines % 10 == 0 && this->lines != 0)
     {
-        level++;
+        this->level++;
     }
+    UILabel* level_label =
+        dynamic_cast<UILabel*>(this->ui_manager.GetUIElement("Level"));
+    level_label->SetText(this->game->renderer,
+                         "Level: " + std::to_string(this->level));
+}
+
+void Tetris::UpdateScore()
+{
+    UILabel* score_label =
+        dynamic_cast<UILabel*>(this->ui_manager.GetUIElement("Score"));
+    score_label->SetText(this->game->renderer,
+                         "Score: " + std::to_string(this->score));
 }
 
 void Tetris::UpdateClearedLines()
@@ -351,6 +383,7 @@ void Tetris::UpdateClearedLines()
             this->score += 100;
     }
     this->UpdateLevel();
+    this->UpdateScore();
 }
 
 void Tetris::ResetBoard() { memset(board, 0, sizeof(this->board)); }

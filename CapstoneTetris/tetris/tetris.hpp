@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../UI/UILabel.hpp"
+#include "../UI/UILabeledButton.hpp"
+#include "../UI/UIManager.hpp"
 #include "../game.hpp"
 #include "../tetromino/tetromino.hpp"
-#include "../UI/UIManager.hpp"
-#include "../UI/UILabeledButton.hpp"
 #include <SDL.h>
 #include <SDL_keycode.h>
 #include <SDL_timer.h>
@@ -44,6 +45,7 @@ private:
     void ResetGraceTimer();
     void DropCurrentBlock();
     void UpdateLevel();
+    void UpdateScore();
     void ResetBoard();
     void BuildUI();
     void HandleMouseClick(SDL_Point point);
