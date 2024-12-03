@@ -29,7 +29,7 @@ Game::Game()
 
     SDL_SetWindowResizable(this->window, SDL_FALSE);
 
-    LOG("Creating window");
+    LOG("Creating renderer...");
     this->renderer =
         SDL_CreateRenderer(this->window, -1, SDL_RENDERER_SOFTWARE);
 
@@ -54,6 +54,7 @@ Game::~Game()
 {
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
+    SDL_Quit();
     return;
 }
 

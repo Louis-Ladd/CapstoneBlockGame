@@ -4,9 +4,18 @@
 
 // Following SRS rotation rules
 
+// All of these classes do the same thing.
+// Set 4 possible rotations (except for the O shape) and uses SetRotationState
+// to copy that into the tetrominos "shape"
+
+// This is an example of inheritance and abstract classes. They all inherit from
+// the base class tetromino that sets up basic things like position, rotation
+// that are applicable to all shapes and these shape classes are the actual
+// objects that we use in tetris.
+
 class IShape : public Tetromino
 {
-  public:
+public:
     IShape()
     {
         Uint8 rotation0[4][4] = {
@@ -29,7 +38,7 @@ class IShape : public Tetromino
 
 class TShape : public Tetromino
 {
-  public:
+public:
     TShape()
     {
         Uint8 rotation0[4][4] = {
@@ -52,7 +61,7 @@ class TShape : public Tetromino
 
 class JShape : public Tetromino
 {
-  public:
+public:
     JShape()
     {
         Uint8 rotation0[4][4] = {
@@ -75,7 +84,7 @@ class JShape : public Tetromino
 
 class LShape : public Tetromino
 {
-  public:
+public:
     LShape()
     {
         Uint8 rotation0[4][4] = {
@@ -98,7 +107,7 @@ class LShape : public Tetromino
 
 class SShape : public Tetromino
 {
-  public:
+public:
     SShape()
     {
         Uint8 rotation0[4][4] = {
@@ -121,7 +130,7 @@ class SShape : public Tetromino
 
 class ZShape : public Tetromino
 {
-  public:
+public:
     ZShape()
     {
         Uint8 rotation0[4][4] = {
@@ -142,19 +151,24 @@ class ZShape : public Tetromino
     }
 };
 
+// O can't "rotate" so we just don't rotate.
 class OShape : public Tetromino
 {
-    public:
-      OShape()
-      {
-          Uint8 rotation0[4][4] = {
-              {0, 7, 7, 0}, {0, 7, 7, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} };
-          for (int i = 0; i < 4; i++)
-          {
-              SetRotationState(i, rotation0);
-          }
-      }
-    void RotateClockwise()
+public:
+    OShape()
+    {
+        Uint8 rotation0[4][4] = {
+            {0, 7, 7, 0}, {0, 7, 7, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+        for (int i = 0; i < 4; i++)
+        {
+            SetRotationState(i, rotation0);
+        }
+    }
+    void RotateClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]) override
+    {
+        return;
+    }
+    void RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]) override
     {
         return;
     }

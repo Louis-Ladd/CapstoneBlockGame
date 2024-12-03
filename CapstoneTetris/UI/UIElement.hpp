@@ -12,6 +12,8 @@ enum class UIElementType
     LabeledButton,
 };
 
+// The UIElement class uses polymorphism so that all UI elements can be
+// genericly handled in the UIManager.
 class UIElement
 {
 public:
@@ -19,6 +21,7 @@ public:
     {
         return UIElementType::GenericElement;
     };
+    virtual ~UIElement() {};
     virtual void Render(SDL_Renderer* renderer);
     Vector2 GetPosition() const { return this->position; };
     virtual void SetPosition(const Vector2 new_pos)
@@ -26,7 +29,6 @@ public:
         this->position = new_pos;
     };
     virtual void SetEnabled(bool new_value) { enabled = new_value; };
-
 
 protected:
     Vector2 position = {0, 0};

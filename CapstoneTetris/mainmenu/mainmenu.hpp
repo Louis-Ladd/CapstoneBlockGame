@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../UI/UIManager.hpp"
-#include "../UI/UIRect.hpp"
 #include "../game.hpp"
 #include <SDL.h>
 

@@ -12,7 +12,7 @@
 #include <numeric>
 #include <queue>
 
-// Standard tetris is 10 wide and 20 high
+// Standard tetris board is 10 wide and 20 high
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
 
@@ -32,6 +32,8 @@ private:
     UIManager ui_manager;
     static Tetris* instance_ptr;
     GameState game_state;
+    // Board is specifically defined as an 8 bit integer to make the board more
+    // efficent memory wise.
     Uint8 board[BOARD_HEIGHT][BOARD_WIDTH];
     int score = 0;
     int level = 1;
@@ -51,7 +53,9 @@ private:
     void HandleMouseClick(SDL_Point point);
 
 public:
-    // Singleton
+    // Singleton, we only have one tetris instance ever so we can make it easier
+    // to access it globaly with this function. if the instance doesn't exist.
+    // creates it.
     static Tetris* GetInstance()
     {
         if (instance_ptr == nullptr)

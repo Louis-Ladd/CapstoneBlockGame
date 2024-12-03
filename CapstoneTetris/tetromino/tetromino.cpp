@@ -33,6 +33,7 @@ Tetromino Tetromino::RandomTetromino()
     return IShape();
 }
 
+// Returns true if we can safely move left or right. Returns false otherwise
 bool Tetromino::CheckMoveHorizontally(int direction,
                                       Uint8 (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 {
@@ -61,6 +62,7 @@ bool Tetromino::CheckMoveHorizontally(int direction,
     return true;
 }
 
+// Checks if this tetromino is on top of a block or the bottom of the board.
 bool Tetromino::CheckIfLanded(Uint8 (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 {
     for (int i = 0; i < 4; i++)
@@ -86,8 +88,10 @@ bool Tetromino::CheckIfLanded(Uint8 (&board)[BOARD_HEIGHT][BOARD_WIDTH])
     return false;
 }
 
-// TODO: Wall kicks are currently not supported
-//  makes rotation feel quite stiff
+// Returns true if this block can do it's next rotation. returns false
+// otherwise.
+// Checks every possible rotation besides left and right movement.
+// (which doesn't allow wall kicks to work.)
 bool Tetromino::CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     int rotated_block[4][4];
@@ -146,6 +150,11 @@ void Tetromino::RotateClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
 
 void Tetromino::RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
 {
+    if (!this->CheckValidRotation(board))
+    {
+        return;
+    }
+    this->rotation = (this->rotation - 1) % 4;
 }
 
 void Tetromino::MoveLeft() { this->position.x--; }

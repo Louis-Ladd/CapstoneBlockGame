@@ -7,6 +7,9 @@
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
 
+// Tetromino is an example of a abstract class. Tetromino isn't used directly
+// (which is why its constructor is protected) as we're meant to use the Shapes
+// that inherit from it.
 class Tetromino
 {
 public:
@@ -21,25 +24,13 @@ public:
     void MoveRight();
     void MoveDown();
     bool CheckIfLanded(Uint8 (&board)[BOARD_HEIGHT][BOARD_WIDTH]);
-    void RotateClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
-    void RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
+    virtual void RotateClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
+    virtual void RotateCounterClockwise(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
     static Tetromino RandomTetromino();
 
 protected:
     inline bool CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH]);
-    Tetromino()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                for (int r = 0; r < 4; r++)
-                {
-                    shapes[r][i][j] = 0;
-                }
-            }
-        }
-    }
+    Tetromino() { memset(shapes, 0, sizeof(shapes)); }
 
     void SetRotationState(int state, const Uint8 rotation[4][4])
     {

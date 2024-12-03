@@ -38,11 +38,14 @@ void Tetris::BuildUI()
     this->ui_manager.AddUIElement("Score", score_label);
 }
 
+// This is our callback function that we give the event handler
+// This function is called whenever the mouse is clicked.
 void Tetris::HandleMouseClick(SDL_Point point)
 {
     this->ui_manager.InvokeClickEvents(point);
 }
 
+// Sets up Tetris board and tees up the blocks to be dropped.
 Tetris::Tetris() : game(Game::GetInstance()), ui_manager(this->game->renderer)
 {
     this->BuildUI();
@@ -67,6 +70,10 @@ Tetris::Tetris() : game(Game::GetInstance()), ui_manager(this->game->renderer)
     this->game_state = GameState::Running;
 }
 
+Tetris::~Tetris() { this->game = nullptr; }
+
+// Set the SDL draw color, this is inlined as we call it a lot in loops
+// So we don't want to jump to it constantly just for one function call.
 inline void Tetris::SetDrawColor(int block_state, Uint8 tint)
 {
     SDL_Renderer* renderer = this->game->renderer;
@@ -118,6 +125,7 @@ void Tetris::DropCurrentBlock()
     ResetGraceTimer();
 }
 
+// This is called every frame, this is meant to handle only logic.
 void Tetris::Update()
 {
 
@@ -178,9 +186,10 @@ void Tetris::Update()
     }
 }
 
+// This is called every frame, this is only meant to handle drawing and
+// rendering.
 void Tetris::Render(SDL_Renderer* renderer)
 {
-    // Draw game elements
     SDL_Rect block = {BLOCK_OFFSET_X, BLOCK_OFFSET_Y, BOARD_WIDTH * BLOCK_SIZE,
                       BOARD_HEIGHT * BLOCK_SIZE};
 
@@ -198,7 +207,7 @@ void Tetris::Render(SDL_Renderer* renderer)
     block.w = BLOCK_SIZE;
     block.h = BLOCK_SIZE;
 
-    // Draw Board Tetrominos
+    // Draw the current board state.
 
     for (int x = 0; x < BOARD_WIDTH; x++)
     {
@@ -220,7 +229,8 @@ void Tetris::Render(SDL_Renderer* renderer)
         }
     }
 
-    // Current Block
+    // Draw the current block (falling block)
+
     for (int ix = 0; ix < 4; ix++)
     {
         for (int iy = 0; iy < 4; iy++)
@@ -241,6 +251,8 @@ void Tetris::Render(SDL_Renderer* renderer)
             SDL_RenderDrawRect(renderer, &block);
         }
     }
+
+    // Draws the next block preview.
 
     Tetromino next_block = this->block_queue.front();
 
@@ -263,6 +275,7 @@ void Tetris::Render(SDL_Renderer* renderer)
         }
     }
 
+    // Render UI after we have drawn our game elements.
     this->ui_manager.Render();
 }
 
@@ -275,6 +288,7 @@ void Tetris::NextBlock()
     current_block.position.x = 3;
 }
 
+// Updates the board state with a given tetromino
 void Tetris::AddBlock(Tetromino tetromino)
 {
     for (int i = 0; i < 4; i++)
@@ -291,6 +305,7 @@ void Tetris::AddBlock(Tetromino tetromino)
     }
 }
 
+// Checks what level we should be right now and then update the level label
 void Tetris::UpdateLevel()
 {
     if (this->lines % 10 == 0 && this->lines != 0)
@@ -303,6 +318,7 @@ void Tetris::UpdateLevel()
                          "Level: " + std::to_string(this->level));
 }
 
+// Update the score label.
 void Tetris::UpdateScore()
 {
     UILabel* score_label =
@@ -311,6 +327,8 @@ void Tetris::UpdateScore()
                          "Score: " + std::to_string(this->score));
 }
 
+// Check the board for lines, game over if topped out.
+// Updates score according to how many lines were cleared.
 void Tetris::UpdateClearedLines()
 {
     if (std::accumulate(std::begin(this->board[0]), std::end(this->board[0]), 0,

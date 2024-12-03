@@ -1,4 +1,4 @@
-#include "input.hpp"
+#include "gameeventhandler.hpp"
 #include "game.hpp"
 #include <SDL_keycode.h>
 
@@ -40,6 +40,7 @@ bool GameEventHandler::ResetKey(SDL_Keycode keycode)
     return false;
 }
 
+// Handles all SDL window events
 void GameEventHandler::HandleEvent(Game* game)
 {
     while (SDL_PollEvent(&game->window_event) > 0)

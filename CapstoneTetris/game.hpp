@@ -1,6 +1,6 @@
 #pragma once
 
-#include "input.hpp"
+#include "gameeventhandler.hpp"
 #include <SDL.h>
 #include <SDL_ttf.h>
 

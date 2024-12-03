@@ -22,15 +22,15 @@ endif()
 
 
 # Add source to this project's executable.
-add_executable (CapstoneTetris 
-                "main.cpp" "main.hpp" 
-                "game.cpp" "game.hpp" 
-                "tetris/tetris.cpp" "tetris/tetris.hpp" 
-                "utils/vector2.hpp" 
-                "tetromino/tetromino.cpp" "tetromino/tetrominos.hpp" 
-                "input.cpp" "input.hpp" 
-                "UI/UIManager.cpp" "UI/UIManager.hpp" 
-                "mainmenu/mainmenu.cpp" "mainmenu/mainmenu.hpp" 
+add_executable (CapstoneTetris
+                "main.cpp" "main.hpp"
+                "game.cpp" "game.hpp"
+                "tetris/tetris.cpp" "tetris/tetris.hpp"
+                "utils/vector2.hpp"
+                "tetromino/tetromino.cpp" "tetromino/tetrominos.hpp"
+                "gameeventhandler.cpp" "gameeventhandler.hpp"
+                "UI/UIManager.cpp" "UI/UIManager.hpp"
+                "mainmenu/mainmenu.cpp" "mainmenu/mainmenu.hpp"
                 "UI/UIElement.cpp" "UI/UIElement.hpp"
                 "UI/UIRect.cpp" "UI/UIRect.hpp"
                 "UI/UIButton.cpp" "UI/UIButton.hpp"
