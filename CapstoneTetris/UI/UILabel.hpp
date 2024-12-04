@@ -9,9 +9,9 @@ class UILabel : public UIElement
 private:
     std::string text = "";
     SDL_Color color;
-    TTF_Font* font;
-    SDL_Surface* surface;
-    SDL_Texture* texture;
+    TTF_Font* font = nullptr;
+    SDL_Surface* surface = nullptr;
+    SDL_Texture* texture = nullptr;
     SDL_Rect rect;
 
 public:
@@ -26,4 +26,5 @@ public:
         text = new_text;
         this->RedrawTexture(renderer);
     };
+    void HandleClick(SDL_Point click_point) override { return; };
 };

@@ -22,6 +22,7 @@ public:
         return UIElementType::GenericElement;
     };
     virtual ~UIElement() {};
+    virtual void HandleClick(SDL_Point click_point);
     virtual void Render(SDL_Renderer* renderer);
     Vector2 GetPosition() const { return this->position; };
     virtual void SetPosition(const Vector2 new_pos)

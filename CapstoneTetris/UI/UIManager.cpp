@@ -44,47 +44,7 @@ void UIManager::InvokeClickEvents(SDL_Point mouse_point)
 {
     for (auto& [name, element] : this->elements)
     {
-        switch (element->GetType())
-        {
-            case UIElementType::Rect:
-            {
-                UIRect* rect = dynamic_cast<UIRect*>(element);
-                if (rect->CheckIfPointIn(mouse_point))
-                    LOG("Is rect");
-                break;
-            }
-            case UIElementType::LabeledButton:
-            {
-                UILabeledButton* labeled_button =
-                    dynamic_cast<UILabeledButton*>(element);
-                if (labeled_button->button->CheckIfPointIn(mouse_point))
-                {
-                    labeled_button->button->ExecuteIfClicked(mouse_point);
-                }
-                break;
-            }
-            case UIElementType::Button:
-            {
-                UIButton* button = dynamic_cast<UIButton*>(element);
-                if (button->CheckIfPointIn(mouse_point))
-                {
-                    LOG("Button pressed, executing callback...");
-                    button->ExecuteIfClicked(mouse_point);
-                }
-                break;
-            }
-            case UIElementType::GenericElement:
-            {
-                LOG("GenericElement not implemented...");
-                break;
-            }
-
-            default:
-            {
-                // Just do nothing
-                break;
-            }
-        }
+        element->HandleClick(mouse_point);
     }
 }
 

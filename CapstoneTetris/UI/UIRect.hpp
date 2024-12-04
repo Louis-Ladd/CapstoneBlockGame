@@ -26,4 +26,5 @@ public:
     };
     void SetColor(SDL_Color color) { this->color = color; };
     void Render(SDL_Renderer* renderer) override;
+    void HandleClick(SDL_Point click_point) override { return; };
 };

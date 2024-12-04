@@ -27,11 +27,14 @@ public:
     void SetPosition(const Vector2 new_pos) override
     {
         button->SetPosition(new_pos);
-        // BUG: Center text on button
+        // TODO: Center text on button
         label->SetPosition(new_pos);
     }
-    void SetEnabled(bool new_value) { enabled = new_value; };
     void Render(SDL_Renderer* renderer) override;
+    void HandleClick(SDL_Point click_point) override
+    {
+        this->button->ExecuteIfClicked(click_point);
+    };
     UIButton* button;
     UILabel* label;
 };
