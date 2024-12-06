@@ -20,6 +20,12 @@ public:
             SDL_Renderer* renderer);
     ~UILabel() override;
     void Render(SDL_Renderer* renderer) override;
+    void SetPosition(const Vector2 new_pos) override
+    {
+        position = new_pos;
+        rect.x = new_pos.x;
+        rect.y = new_pos.y;
+    }
     void RedrawTexture(SDL_Renderer* renderer);
     void SetText(SDL_Renderer* renderer, std::string new_text)
     {
@@ -27,4 +33,5 @@ public:
         this->RedrawTexture(renderer);
     };
     void HandleClick(SDL_Point click_point) override { return; };
+    int GetTextWidth() { return surface->w; };
 };

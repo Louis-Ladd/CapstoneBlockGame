@@ -21,6 +21,11 @@ void UIRect::SetPosition(const Vector2 new_pos)
 
 void UIRect::Render(SDL_Renderer* renderer)
 {
+    if (!this->enabled)
+    {
+        return;
+    }
+
     SDL_SetRenderDrawColor(renderer, this->color.r, this->color.g,
                            this->color.b, this->color.a);
     SDL_RenderFillRect(renderer, &this->rect);

@@ -16,6 +16,7 @@ void Tetris::BuildUI()
     SDL_Color white = {255, 255, 255, 255};
     SDL_Color dark_cyan = {0, 171, 196, 255};
 
+    // Game UI elements
     UILabel* level_label =
         new UILabel(450, 180, this->ui_manager.GetDefaultFont(3),
                     "Level: Not Set", white, this->game->renderer);
@@ -36,6 +37,16 @@ void Tetris::BuildUI()
     this->ui_manager.AddUIElement("Next", play_button);
     this->ui_manager.AddUIElement("Level", level_label);
     this->ui_manager.AddUIElement("Score", score_label);
+
+    // Game over UI elements
+    UILabel* game_over_label =
+        new UILabel(0, 0, this->ui_manager.GetDefaultFont(3), "Game Over",
+                    white, this->game->renderer);
+    game_over_label->SetPosition(
+        {(SCREEN_WIDTH / 2) - (game_over_label->GetTextWidth() / 2), 50});
+    game_over_label->SetEnabled(false);
+
+    this->ui_manager.AddUIElement("GameOverLabel", game_over_label);
 }
 
 // This is our callback function that we give the event handler
@@ -129,6 +140,11 @@ void Tetris::DropCurrentBlock()
 void Tetris::Update()
 {
 
+    if (this->game_state == GameState::Lost)
+    {
+        return;
+    }
+
     if (SDL_GetTicks() - this->block_fall_cooldown >=
             600 / (1 + 0.3f * (this->level + 2)) &&
         !this->current_block.CheckIfLanded(this->board))
@@ -190,6 +206,11 @@ void Tetris::Update()
 // rendering.
 void Tetris::Render(SDL_Renderer* renderer)
 {
+    if (this->game_state == GameState::Lost)
+    {
+        this->ui_manager.Render();
+        return;
+    }
     SDL_Rect block = {BLOCK_OFFSET_X, BLOCK_OFFSET_Y, BOARD_WIDTH * BLOCK_SIZE,
                       BOARD_HEIGHT * BLOCK_SIZE};
 
@@ -331,13 +352,16 @@ void Tetris::UpdateScore()
 // Updates score according to how many lines were cleared.
 void Tetris::UpdateClearedLines()
 {
+    // Check if any block occupies the top of the board.
+    // Game over if so.
     if (std::accumulate(std::begin(this->board[0]), std::end(this->board[0]), 0,
                         std::plus<int>()) > 0)
     {
-        // TODO: Game Over
         this->game_state = GameState::Lost;
         ResetBoard();
-        this->game_state = GameState::Running;
+        this->SetGameUIElements(false);
+        this->SetGameOverUIElements(true);
+        return;
     }
     bool update_needed = false;
     bool cleared_line_indexes[BOARD_HEIGHT] = {false};
@@ -402,6 +426,18 @@ void Tetris::UpdateClearedLines()
     }
     this->UpdateLevel();
     this->UpdateScore();
+}
+
+void Tetris::SetGameUIElements(bool enabled)
+{
+    this->ui_manager.GetUIElement("Next")->SetEnabled(enabled);
+    this->ui_manager.GetUIElement("Level")->SetEnabled(enabled);
+    this->ui_manager.GetUIElement("Score")->SetEnabled(enabled);
+}
+
+void Tetris::SetGameOverUIElements(bool enabled)
+{
+    this->ui_manager.GetUIElement("GameOverLabel")->SetEnabled(enabled);
 }
 
 void Tetris::ResetBoard() { memset(board, 0, sizeof(this->board)); }

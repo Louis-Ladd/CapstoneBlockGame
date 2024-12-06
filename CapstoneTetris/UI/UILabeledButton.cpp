@@ -20,6 +20,10 @@ UILabeledButton::~UILabeledButton()
 
 void UILabeledButton::Render(SDL_Renderer* renderer)
 {
+    if (!this->enabled)
+    {
+        return;
+    }
     this->button->Render(renderer);
     this->label->Render(renderer);
 }

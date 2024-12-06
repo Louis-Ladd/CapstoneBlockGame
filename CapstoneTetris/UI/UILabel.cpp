@@ -30,6 +30,10 @@ UILabel::~UILabel()
 
 void UILabel::Render(SDL_Renderer* renderer)
 {
+    if (!this->enabled)
+    {
+        return;
+    }
     SDL_RenderCopy(renderer, this->texture, NULL, &this->rect);
 }
 

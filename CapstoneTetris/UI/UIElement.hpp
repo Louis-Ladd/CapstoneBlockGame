@@ -25,11 +25,9 @@ public:
     virtual void HandleClick(SDL_Point click_point);
     virtual void Render(SDL_Renderer* renderer);
     Vector2 GetPosition() const { return this->position; };
-    virtual void SetPosition(const Vector2 new_pos)
-    {
-        this->position = new_pos;
-    };
+    virtual void SetPosition(const Vector2 new_pos) { position = new_pos; };
     virtual void SetEnabled(bool new_value) { enabled = new_value; };
+    bool GetEnabled() { return enabled; }
 
 protected:
     Vector2 position = {0, 0};

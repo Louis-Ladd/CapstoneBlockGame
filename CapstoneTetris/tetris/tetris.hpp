@@ -49,8 +49,10 @@ private:
     void UpdateLevel();
     void UpdateScore();
     void ResetBoard();
-    void BuildUI();
     void HandleMouseClick(SDL_Point point);
+    void SetGameOverUIElements(bool enabled);
+    void SetGameUIElements(bool enabled);
+    void BuildUI();
 
 public:
     // Singleton, we only have one tetris instance ever so we can make it easier

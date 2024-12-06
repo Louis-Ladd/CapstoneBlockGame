@@ -23,22 +23,23 @@ void MainMenu::BuildMainMenu()
     SDL_Color red = {255, 0, 0, 255};
     SDL_Color dark_cyan = {0, 171, 196, 255};
 
-    UILabel* title = new UILabel((SCREEN_WIDTH / 2) - 200, 50,
-                                 this->ui_manager.GetDefaultFont(3),
+    UILabel* title = new UILabel(0, 0, this->ui_manager.GetDefaultFont(3),
                                  "Falling Block game", white, this->renderer);
-    this->ui_manager.AddUIElement("Title", title);
+    title->SetPosition({(SCREEN_WIDTH / 2) - (title->GetTextWidth() / 2), 50});
 
     UILabeledButton* play_button = new UILabeledButton(
         (SCREEN_WIDTH / 2) - 300 / 2, 250, 300, 100, white, dark_cyan,
         this->ui_manager.GetDefaultFont(3), this->renderer, "Play");
     play_button->button->SetOnClickFunction([this](void) { this->Close(); });
-    this->ui_manager.AddUIElement("Play", play_button);
 
     UILabeledButton* quit_button = new UILabeledButton(
         (SCREEN_WIDTH / 2) - 300 / 2, 450, 300, 100, white, red,
         this->ui_manager.GetDefaultFont(3), this->renderer, "Quit");
     quit_button->button->SetOnClickFunction([this](void)
                                             { this->game->Quit(); });
+
+    this->ui_manager.AddUIElement("Title", title);
+    this->ui_manager.AddUIElement("Play", play_button);
     this->ui_manager.AddUIElement("Quit", quit_button);
 }
 
