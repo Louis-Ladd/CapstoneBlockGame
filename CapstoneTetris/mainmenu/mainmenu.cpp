@@ -3,9 +3,9 @@
 #include "../log.hpp"
 #include "SDL_render.h"
 
-void RunMainMenu(SDL_Renderer* renderer, Game* game)
+void RunMainMenu(Game* game)
 {
-    MainMenu* main_menu = new MainMenu(game->renderer, game);
+    MainMenu* main_menu = new MainMenu(game);
 
     main_menu->Start();
 

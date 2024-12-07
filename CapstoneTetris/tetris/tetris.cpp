@@ -10,11 +10,9 @@ Tetris* Tetris::instance_ptr = nullptr;
 
 void Tetris::BuildUI()
 {
-    this->game->event_handler.SetMouseCallback([this](SDL_Point point)
-                                               { HandleMouseClick(point); });
-
     SDL_Color white = {255, 255, 255, 255};
     SDL_Color dark_cyan = {0, 171, 196, 255};
+    SDL_Color red = { 255, 0, 0, 255 };
 
     // Game UI elements
     UILabel* level_label =
@@ -25,16 +23,16 @@ void Tetris::BuildUI()
         new UILabel(450, 225, this->ui_manager.GetDefaultFont(3),
                     "Score: Not Set", white, this->game->renderer);
 
-    UILabeledButton* play_button = new UILabeledButton(
+    UILabeledButton* next_button = new UILabeledButton(
         500, 350, 100, 100, white, dark_cyan,
         this->ui_manager.GetDefaultFont(2), this->game->renderer, "Next");
-    play_button->button->SetOnClickFunction(
+    next_button->button->SetOnClickFunction(
         [this](void)
         {
             this->level++;
             this->UpdateLevel();
         });
-    this->ui_manager.AddUIElement("Next", play_button);
+    this->ui_manager.AddUIElement("Next", next_button);
     this->ui_manager.AddUIElement("Level", level_label);
     this->ui_manager.AddUIElement("Score", score_label);
 
@@ -46,7 +44,47 @@ void Tetris::BuildUI()
         {(SCREEN_WIDTH / 2) - (game_over_label->GetTextWidth() / 2), 50});
     game_over_label->SetEnabled(false);
 
+    UILabel* high_score_label = 
+        new UILabel(0, 0, this->ui_manager.GetDefaultFont(2), "High Score: 0", 
+                    white, this->game->renderer);
+    high_score_label->SetPosition({ (SCREEN_WIDTH / 2) - (high_score_label->GetTextWidth() / 2), 150});
+    high_score_label->SetEnabled(false);
+
+    UILabeledButton* exit_to_main_menu_button = new UILabeledButton(
+        (SCREEN_WIDTH / 2) - 450 / 2, 250, 450, 100, white, dark_cyan, 
+        this->ui_manager.GetDefaultFont(3), this->game->renderer, "Exit To Main Menu");
+    exit_to_main_menu_button->SetEnabled(false);
+    exit_to_main_menu_button->button->SetOnClickFunction(
+        [this](void)
+        {
+            this->SetGameOverUIElements(false);
+            RunMainMenu(this->game);
+            this->SetGameUIElements(true);
+            this->SetGameState(GameState::Running);
+            this->game->event_handler.SetMouseCallback([this](SDL_Point point)
+                                               { HandleMouseClick(point); });
+
+        }
+    );
+
+    UILabeledButton* quit_button = new UILabeledButton(
+        (SCREEN_WIDTH / 2) - 200 / 2, 450, 200, 100, white, red, 
+        this->ui_manager.GetDefaultFont(3), this->game->renderer, "Quit");
+    quit_button->SetEnabled(false);
+    quit_button->button->SetOnClickFunction(
+        [this](void)
+        {
+            this->game->Quit();
+        }
+    );
+
+    this->ui_manager.AddUIElement("ExitToMainMenuButton", exit_to_main_menu_button);
+    this->ui_manager.AddUIElement("QuitButton", quit_button);
     this->ui_manager.AddUIElement("GameOverLabel", game_over_label);
+    this->ui_manager.AddUIElement("HighScoreLabel", high_score_label);
+
+    this->game->event_handler.SetMouseCallback([this](SDL_Point point)
+                                               { HandleMouseClick(point); });
 }
 
 // This is our callback function that we give the event handler
@@ -78,7 +116,7 @@ Tetris::Tetris() : game(Game::GetInstance()), ui_manager(this->game->renderer)
         LOG("Tetris couldn't find game insance");
     }
 
-    this->game_state = GameState::Running;
+    this->SetGameState(GameState::Running);
 }
 
 Tetris::~Tetris() { this->game = nullptr; }
@@ -357,8 +395,8 @@ void Tetris::UpdateClearedLines()
     if (std::accumulate(std::begin(this->board[0]), std::end(this->board[0]), 0,
                         std::plus<int>()) > 0)
     {
-        this->game_state = GameState::Lost;
-        ResetBoard();
+        this->SetGameState(GameState::Lost);
+        ResetGame();
         this->SetGameUIElements(false);
         this->SetGameOverUIElements(true);
         return;
@@ -376,7 +414,7 @@ void Tetris::UpdateClearedLines()
                 board[row][col] = 0;
                 Tetris::Render(this->game->renderer);
                 SDL_RenderPresent(this->game->renderer);
-                SDL_Delay(25);
+                SDL_Delay(15);
             }
             update_needed = true;
             cleared_line_indexes[row] = true;
@@ -437,9 +475,28 @@ void Tetris::SetGameUIElements(bool enabled)
 
 void Tetris::SetGameOverUIElements(bool enabled)
 {
+    this->ui_manager.GetUIElement("HighScoreLabel")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("GameOverLabel")->SetEnabled(enabled);
+    this->ui_manager.GetUIElement("ExitToMainMenuButton")->SetEnabled(enabled);
+    this->ui_manager.GetUIElement("QuitButton")->SetEnabled(enabled);
 }
 
 void Tetris::ResetBoard() { memset(board, 0, sizeof(this->board)); }
+
+void Tetris::ResetGame()
+{
+    this->ResetBoard();
+    this->level = 1;
+    this->lines = 0;
+    this->score = 0;
+    this->UpdateLevel();
+    this->UpdateScore();
+    current_block = Tetromino::RandomTetromino();
+    current_block.position.x = 3;
+    for (int i = 0; i < 3; i++)
+    {
+        this->block_queue.push(Tetromino::RandomTetromino());
+    }
+}
 
 Uint8 (*Tetris::GetBoard())[BOARD_WIDTH] { return this->board; }

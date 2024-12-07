@@ -18,9 +18,9 @@ public:
     void HandleMouseClick(SDL_Point point);
     bool GetIsOpen() { return is_open; };
     void Close() { is_open = false; };
-    MainMenu(SDL_Renderer* renderer, Game* game)
-        : game(game), renderer(renderer), ui_manager(renderer) {};
+    MainMenu(Game* game)
+        : game(game), renderer(game->renderer), ui_manager(renderer) {};
     void Start();
 };
 
-void RunMainMenu(SDL_Renderer* renderer, Game* game);
+void RunMainMenu(Game* game);

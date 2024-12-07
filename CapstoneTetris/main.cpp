@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 {
     Game* game = Game::GetInstance();
 
-    RunMainMenu(game->renderer, game);
+    RunMainMenu(game);
 
     Tetris* tetris = Tetris::GetInstance();
 

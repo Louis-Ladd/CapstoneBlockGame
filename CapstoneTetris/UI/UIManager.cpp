@@ -44,6 +44,10 @@ void UIManager::InvokeClickEvents(SDL_Point mouse_point)
 {
     for (auto& [name, element] : this->elements)
     {
+        if (!element->GetEnabled())
+        {
+            continue;
+        }
         element->HandleClick(mouse_point);
     }
 }

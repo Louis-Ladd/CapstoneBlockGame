@@ -9,11 +9,10 @@ void UIButton::SetOnClickFunction(std::function<void(void)> func)
 
 void UIButton::HandleClick(SDL_Point click_point)
 {
-    if (!this->enabled)
+    if (this->enabled)
     {
-        return;
+        this->ExecuteIfClicked(click_point);
     }
-    this->ExecuteIfClicked(click_point);
 }
 
 void UIButton::ExecuteIfClicked(SDL_Point click_point)
