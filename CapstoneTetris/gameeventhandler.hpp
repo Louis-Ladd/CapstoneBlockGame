@@ -14,6 +14,7 @@ class GameEventHandler
 private:
     bool keys[MAX_KEYS] = {false};
     void UpdatePressedKeys(SDL_Event event);
+    // Anything this must set it back to nullptr on cleanup!
     std::function<void(SDL_Point)> callback_func = nullptr;
 
 public:

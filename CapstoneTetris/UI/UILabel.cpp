@@ -14,6 +14,7 @@ UILabel::UILabel(int x, int y, TTF_Font* font, std::string text,
     this->RedrawTexture(renderer);
 }
 
+// We have ownership of SDL textures and surfaces so we must free them.
 UILabel::~UILabel()
 {
     if (this->texture != nullptr)
@@ -37,7 +38,9 @@ void UILabel::Render(SDL_Renderer* renderer)
     SDL_RenderCopy(renderer, this->texture, NULL, &this->rect);
 }
 
-// Redraws the labels texture. This is required with ANY MODIFICATIONS.
+// Redraws the labels texture. This is required with ANY MODIFICATIONS. This is
+// because UI label is just a texture and we draw that texture every frame.
+// Thus, the texture has to be redrawn
 void UILabel::RedrawTexture(SDL_Renderer* renderer)
 {
     if (this->surface != nullptr)

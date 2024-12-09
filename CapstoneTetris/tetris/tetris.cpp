@@ -1,5 +1,7 @@
 #include "tetris.hpp"
 #include "../log.hpp"
+#include "SDL_keycode.h"
+#include "SDL_timer.h"
 #include <string>
 
 Tetris* Tetris::instance_ptr = nullptr;
@@ -10,9 +12,12 @@ Tetris* Tetris::instance_ptr = nullptr;
 
 void Tetris::BuildUI()
 {
+    // We create and add all of the UI elements to our ui_manager. The
+    // ui_manager now has ownership and must free them.
+
     SDL_Color white = {255, 255, 255, 255};
     SDL_Color dark_cyan = {0, 171, 196, 255};
-    SDL_Color red = { 255, 0, 0, 255 };
+    SDL_Color red = {255, 0, 0, 255};
 
     // Game UI elements
     UILabel* level_label =
@@ -23,18 +28,17 @@ void Tetris::BuildUI()
         new UILabel(450, 225, this->ui_manager.GetDefaultFont(3),
                     "Score: Not Set", white, this->game->renderer);
 
-    UILabeledButton* next_button = new UILabeledButton(
-        500, 350, 100, 100, white, dark_cyan,
-        this->ui_manager.GetDefaultFont(2), this->game->renderer, "Next");
-    next_button->button->SetOnClickFunction(
-        [this](void)
-        {
-            this->level++;
-            this->UpdateLevel();
-        });
-    this->ui_manager.AddUIElement("Next", next_button);
+    UILabel* paused_label =
+        new UILabel(0, 0, this->ui_manager.GetDefaultFont(3), "Paused...", red,
+                    this->game->renderer);
+    paused_label->SetPosition(
+        {(SCREEN_WIDTH / 2) - paused_label->GetTextWidth() / 2,
+         (SCREEN_HEIGHT / 2) - 24});
+    paused_label->SetEnabled(false);
+
     this->ui_manager.AddUIElement("Level", level_label);
     this->ui_manager.AddUIElement("Score", score_label);
+    this->ui_manager.AddUIElement("PausedLabel", paused_label);
 
     // Game over UI elements
     UILabel* game_over_label =
@@ -44,15 +48,33 @@ void Tetris::BuildUI()
         {(SCREEN_WIDTH / 2) - (game_over_label->GetTextWidth() / 2), 50});
     game_over_label->SetEnabled(false);
 
-    UILabel* high_score_label = 
-        new UILabel(0, 0, this->ui_manager.GetDefaultFont(2), "High Score: 0", 
+    UILabel* high_score_label =
+        new UILabel(0, 0, this->ui_manager.GetDefaultFont(2), "High Score: 0",
                     white, this->game->renderer);
-    high_score_label->SetPosition({ (SCREEN_WIDTH / 2) - (high_score_label->GetTextWidth() / 2), 150});
+    high_score_label->SetPosition(
+        {(SCREEN_WIDTH / 2) - (high_score_label->GetTextWidth() / 2), 150});
     high_score_label->SetEnabled(false);
 
-    UILabeledButton* exit_to_main_menu_button = new UILabeledButton(
-        (SCREEN_WIDTH / 2) - 450 / 2, 250, 450, 100, white, dark_cyan, 
-        this->ui_manager.GetDefaultFont(3), this->game->renderer, "Exit To Main Menu");
+    UILabeledButton* continue_button = new UILabeledButton(
+        (SCREEN_WIDTH / 2) - 450 / 2, 250, 450, 100, white, dark_cyan,
+        this->ui_manager.GetDefaultFont(3), this->game->renderer, "Retry");
+    continue_button->SetEnabled(false);
+    // Set the buttons OnClick function to an lambda expression with a reference
+    // to this tetris object so that we can mutate our game state later on.
+    continue_button->button->SetOnClickFunction(
+        [this](void)
+        {
+            this->SetGameOverUIElements(false);
+            this->SetGameUIElements(true);
+            this->SetGameState(GameState::Running);
+            this->game->event_handler.SetMouseCallback(
+                [this](SDL_Point point) { HandleMouseClick(point); });
+        });
+
+    UILabeledButton* exit_to_main_menu_button =
+        new UILabeledButton((SCREEN_WIDTH / 2) - 450 / 2, 400, 450, 100, white,
+                            dark_cyan, this->ui_manager.GetDefaultFont(3),
+                            this->game->renderer, "Exit To Main Menu");
     exit_to_main_menu_button->SetEnabled(false);
     exit_to_main_menu_button->button->SetOnClickFunction(
         [this](void)
@@ -61,30 +83,28 @@ void Tetris::BuildUI()
             RunMainMenu(this->game);
             this->SetGameUIElements(true);
             this->SetGameState(GameState::Running);
-            this->game->event_handler.SetMouseCallback([this](SDL_Point point)
-                                               { HandleMouseClick(point); });
-
-        }
-    );
+            this->game->event_handler.SetMouseCallback(
+                [this](SDL_Point point) { HandleMouseClick(point); });
+        });
 
     UILabeledButton* quit_button = new UILabeledButton(
-        (SCREEN_WIDTH / 2) - 200 / 2, 450, 200, 100, white, red, 
-        this->ui_manager.GetDefaultFont(3), this->game->renderer, "Quit");
+        (SCREEN_WIDTH / 2) - 50 / 2, 568, 50, 20, white, red,
+        this->ui_manager.GetDefaultFont(1), this->game->renderer, "Quit");
     quit_button->SetEnabled(false);
-    quit_button->button->SetOnClickFunction(
-        [this](void)
-        {
-            this->game->Quit();
-        }
-    );
+    quit_button->button->SetOnClickFunction([this](void)
+                                            { this->game->Quit(); });
 
-    this->ui_manager.AddUIElement("ExitToMainMenuButton", exit_to_main_menu_button);
+    this->ui_manager.AddUIElement("ExitToMainMenuButton",
+                                  exit_to_main_menu_button);
     this->ui_manager.AddUIElement("QuitButton", quit_button);
     this->ui_manager.AddUIElement("GameOverLabel", game_over_label);
     this->ui_manager.AddUIElement("HighScoreLabel", high_score_label);
+    this->ui_manager.AddUIElement("ContinueButton", continue_button);
 
-    this->game->event_handler.SetMouseCallback([this](SDL_Point point)
-                                               { HandleMouseClick(point); });
+    // Should be NULL if nothing else is using it.
+    // Since we have execution, we use our click handler.
+    this->game->event_handler.SetMouseCallback(
+        [this](SDL_Point point) { this->HandleMouseClick(point); });
 }
 
 // This is our callback function that we give the event handler
@@ -166,6 +186,8 @@ inline void Tetris::SetDrawColor(int block_state, Uint8 tint)
 
 void Tetris::ResetGraceTimer() { this->block_drop_grace = 0.3; }
 
+// Add this block to the board and set other various things that the next block
+// will use.
 void Tetris::DropCurrentBlock()
 {
     this->AddBlock(this->current_block);
@@ -177,6 +199,43 @@ void Tetris::DropCurrentBlock()
 // This is called every frame, this is meant to handle only logic.
 void Tetris::Update()
 {
+    if (this->game_state == GameState::Paused)
+    {
+        UILabel* paused_label =
+            static_cast<UILabel*>(this->ui_manager.GetUIElement("PausedLabel"));
+        // make sure text is showing
+        if (!paused_label->GetEnabled())
+        {
+            paused_label->SetEnabled(true);
+        }
+        // If escape is pressed, wait 1 second while counting down and take over
+        // rendering the program. Window events do not register during this.
+        if (this->game->event_handler.ResetKey(SDLK_ESCAPE))
+        {
+            for (int i = 3; i >= 1; i--)
+            {
+                paused_label->SetText(this->game->renderer,
+                                      "Starting in " + std::to_string(i) +
+                                          "...");
+                SDL_SetRenderDrawColor(game->renderer, 0, 0, 128, 0);
+                SDL_RenderClear(game->renderer);
+                this->Render(this->game->renderer);
+                SDL_RenderPresent(this->game->renderer);
+                SDL_Delay(333);
+            }
+            paused_label->SetText(this->game->renderer, "Paused...");
+            this->SetGameState(GameState::Running);
+            paused_label->SetEnabled(false);
+        }
+        return;
+    }
+    else if (this->game_state == GameState::Running)
+    {
+        if (this->game->event_handler.ResetKey(SDLK_ESCAPE))
+        {
+            this->SetGameState(GameState::Paused);
+        }
+    }
 
     if (this->game_state == GameState::Lost)
     {
@@ -204,6 +263,9 @@ void Tetris::Update()
         }
     }
 
+    // ResetKey returns if a key is down as well as disabling that key.
+    // This means the system has to send another key pressed down event before
+    // it can be registered again.
     if (this->game->event_handler.ResetKey(SDLK_a) &&
         this->current_block.CheckMoveHorizontally(-1, board))
     {
@@ -266,6 +328,11 @@ void Tetris::Render(SDL_Renderer* renderer)
     block.w = BLOCK_SIZE;
     block.h = BLOCK_SIZE;
 
+    if (this->game_state == GameState::Paused)
+    {
+        this->ui_manager.Render();
+        return;
+    }
     // Draw the current board state.
 
     for (int x = 0; x < BOARD_WIDTH; x++)
@@ -396,6 +463,9 @@ void Tetris::UpdateClearedLines()
                         std::plus<int>()) > 0)
     {
         this->SetGameState(GameState::Lost);
+        static_cast<UILabel*>(this->ui_manager.GetUIElement("HighScoreLabel"))
+            ->SetText(this->game->renderer,
+                      "High Score: " + std::to_string(this->score));
         ResetGame();
         this->SetGameUIElements(false);
         this->SetGameOverUIElements(true);
@@ -468,15 +538,15 @@ void Tetris::UpdateClearedLines()
 
 void Tetris::SetGameUIElements(bool enabled)
 {
-    this->ui_manager.GetUIElement("Next")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("Level")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("Score")->SetEnabled(enabled);
 }
 
 void Tetris::SetGameOverUIElements(bool enabled)
 {
-    this->ui_manager.GetUIElement("HighScoreLabel")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("GameOverLabel")->SetEnabled(enabled);
+    this->ui_manager.GetUIElement("HighScoreLabel")->SetEnabled(enabled);
+    this->ui_manager.GetUIElement("ContinueButton")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("ExitToMainMenuButton")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("QuitButton")->SetEnabled(enabled);
 }

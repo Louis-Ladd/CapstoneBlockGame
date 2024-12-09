@@ -8,5 +8,3 @@
 #include "tetris/tetris.hpp"
 #include <SDL.h>
 #include <iostream>
-
-// TODO: Reference additional headers your program requires here.

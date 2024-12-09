@@ -46,7 +46,6 @@ void MainMenu::BuildMainMenu()
 // This is our callback for mouse events that give our event handler.
 void MainMenu::HandleMouseClick(SDL_Point point)
 {
-    LOG("Click at: x:%i y:%i", point.x, point.y);
     this->ui_manager.InvokeClickEvents(point);
 }
 

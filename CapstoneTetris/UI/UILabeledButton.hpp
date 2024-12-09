@@ -21,19 +21,18 @@ public:
         : UILabeledButton(x, y, w, h, text_color, button_color, label_font,
                           renderer, text)
     {
-        this->button->SetOnClickFunction(func);
+        button->SetOnClickFunction(func);
     };
     ~UILabeledButton() override;
     void SetPosition(const Vector2 new_pos) override
     {
         button->SetPosition(new_pos);
-        // TODO: Center text on button
         label->SetPosition(new_pos);
     }
     void Render(SDL_Renderer* renderer) override;
     void HandleClick(SDL_Point click_point) override
     {
-        this->button->ExecuteIfClicked(click_point);
+        button->ExecuteIfClicked(click_point);
     };
     UIButton* button;
     UILabel* label;

@@ -40,7 +40,7 @@ bool GameEventHandler::ResetKey(SDL_Keycode keycode)
     return false;
 }
 
-// Handles all SDL window events
+// Handles all window events like quiting, key strokes, and mouse clicks.
 void GameEventHandler::HandleEvent(Game* game)
 {
     while (SDL_PollEvent(&game->window_event) > 0)
