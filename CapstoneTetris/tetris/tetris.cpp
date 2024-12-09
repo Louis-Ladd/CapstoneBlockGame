@@ -439,7 +439,7 @@ void Tetris::UpdateLevel()
         this->level++;
     }
     UILabel* level_label =
-        dynamic_cast<UILabel*>(this->ui_manager.GetUIElement("Level"));
+        static_cast<UILabel*>(this->ui_manager.GetUIElement("Level"));
     level_label->SetText(this->game->renderer,
                          "Level: " + std::to_string(this->level));
 }
@@ -448,7 +448,7 @@ void Tetris::UpdateLevel()
 void Tetris::UpdateScore()
 {
     UILabel* score_label =
-        dynamic_cast<UILabel*>(this->ui_manager.GetUIElement("Score"));
+        static_cast<UILabel*>(this->ui_manager.GetUIElement("Score"));
     score_label->SetText(this->game->renderer,
                          "Score: " + std::to_string(this->score));
 }
