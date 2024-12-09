@@ -10,6 +10,7 @@ Tetris* Tetris::instance_ptr = nullptr;
 #define BLOCK_OFFSET_X 150
 #define BLOCK_OFFSET_Y 25
 
+// This is a very busy function and hard to read, All it does is instantiates a bunch of UI elements and adds them to the uimanager
 void Tetris::BuildUI()
 {
     // We create and add all of the UI elements to our ui_manager. The
@@ -142,7 +143,7 @@ Tetris::Tetris() : game(Game::GetInstance()), ui_manager(this->game->renderer)
 Tetris::~Tetris() { this->game = nullptr; }
 
 // Set the SDL draw color, this is inlined as we call it a lot in loops
-// So we don't want to jump to it constantly just for one function call.
+// because we don't want to jump to it constantly just for one function call.
 inline void Tetris::SetDrawColor(int block_state, Uint8 tint)
 {
     SDL_Renderer* renderer = this->game->renderer;
@@ -311,6 +312,8 @@ void Tetris::Render(SDL_Renderer* renderer)
         this->ui_manager.Render();
         return;
     }
+
+    // Draw the background and the next block background
     SDL_Rect block = {BLOCK_OFFSET_X, BLOCK_OFFSET_Y, BOARD_WIDTH * BLOCK_SIZE,
                       BOARD_HEIGHT * BLOCK_SIZE};
 
@@ -496,6 +499,7 @@ void Tetris::UpdateClearedLines()
         return;
     }
 
+    // Count the cleared lines and remove them.
     int count = 0;
     for (int i = 0; i < BOARD_HEIGHT; i++)
     {
@@ -510,7 +514,6 @@ void Tetris::UpdateClearedLines()
                       board[relative_row - 1] + BOARD_WIDTH,
                       board[relative_row]);
         }
-        memset(board[0], 0, sizeof(board[0]));
     }
 
     this->lines += count;
@@ -553,6 +556,7 @@ void Tetris::SetGameOverUIElements(bool enabled)
 
 void Tetris::ResetBoard() { memset(board, 0, sizeof(this->board)); }
 
+// Set all game state back to a starting point
 void Tetris::ResetGame()
 {
     this->ResetBoard();

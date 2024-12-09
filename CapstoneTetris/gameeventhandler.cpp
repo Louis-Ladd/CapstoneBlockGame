@@ -8,6 +8,7 @@ void GameEventHandler::SetMouseCallback(
     this->callback_func = callback_func;
 }
 
+// Updates the array of keys where the index represents whether a keycode is pressed or not pressed
 void GameEventHandler::UpdatePressedKeys(SDL_Event event)
 {
     int keycode = event.key.keysym.sym;
@@ -30,6 +31,7 @@ void GameEventHandler::UpdatePressedKeys(SDL_Event event)
 
 bool GameEventHandler::IsKeyDown(SDL_Keycode keycode) { return keys[keycode]; }
 
+// Returns if a key is down and then resets that key forcing another press event to happen before it's true again.
 bool GameEventHandler::ResetKey(SDL_Keycode keycode)
 {
     if (IsKeyDown(keycode))

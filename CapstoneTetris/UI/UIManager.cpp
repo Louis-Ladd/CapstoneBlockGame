@@ -5,6 +5,7 @@
 #include "UILabeledButton.hpp"
 #include "UIRect.hpp"
 
+// Sets up all default fonts so the UI elements can access them
 UIManager::UIManager(SDL_Renderer* renderer)
 {
     this->renderer = renderer;

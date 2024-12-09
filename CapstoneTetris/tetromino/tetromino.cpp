@@ -2,6 +2,7 @@
 #include "../log.hpp"
 #include "tetrominos.hpp"
 
+// Returns a random tetromino
 Tetromino Tetromino::RandomTetromino()
 {
     int random_number = std::rand() % 7;
@@ -95,6 +96,7 @@ bool Tetromino::CheckIfLanded(Uint8 (&board)[BOARD_HEIGHT][BOARD_WIDTH])
 bool Tetromino::CheckValidRotation(Uint8 board[BOARD_HEIGHT][BOARD_WIDTH])
 {
     int rotated_block[4][4];
+    // Copy the shapes next rotation to a local stack variable for this functions use.
     std::copy(&shapes[(rotation + 1) % 4][0][0],
               &shapes[(rotation + 1) % 4][0][0] + 4 * 4, &rotated_block[0][0]);
 

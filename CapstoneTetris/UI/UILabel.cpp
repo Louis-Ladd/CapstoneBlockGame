@@ -40,7 +40,7 @@ void UILabel::Render(SDL_Renderer* renderer)
 
 // Redraws the labels texture. This is required with ANY MODIFICATIONS. This is
 // because UI label is just a texture and we draw that texture every frame.
-// Thus, the texture has to be redrawn
+// Thus, the texture has to be redrawn for new text or colors
 void UILabel::RedrawTexture(SDL_Renderer* renderer)
 {
     if (this->surface != nullptr)

@@ -19,6 +19,7 @@ void UIRect::SetPosition(const Vector2 new_pos)
     this->position = new_pos;
 }
 
+// Renders rect
 void UIRect::Render(SDL_Renderer* renderer)
 {
     if (!this->enabled)
