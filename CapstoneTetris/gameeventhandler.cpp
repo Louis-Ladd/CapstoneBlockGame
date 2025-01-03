@@ -1,5 +1,5 @@
 #include "gameeventhandler.hpp"
-#include "game.hpp"
+#include "application.hpp"
 #include <SDL_keycode.h>
 
 void GameEventHandler::SetMouseCallback(
@@ -43,7 +43,7 @@ bool GameEventHandler::ResetKey(SDL_Keycode keycode)
 }
 
 // Handles all window events like quiting, key strokes, and mouse clicks.
-void GameEventHandler::HandleEvent(Game* game)
+void GameEventHandler::HandleEvent(Application* game)
 {
     while (SDL_PollEvent(&game->window_event) > 0)
     {

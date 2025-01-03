@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "game.hpp"
+#include "application.hpp"
 #include "mainmenu/mainmenu.hpp"
 #include "tetris/tetris.hpp"
 #include <SDL.h>

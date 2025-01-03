@@ -24,7 +24,7 @@ endif()
 # Add source to this project's executable.
 add_executable (CapstoneTetris
                 "main.cpp" "main.hpp"
-                "game.cpp" "game.hpp"
+                "application.cpp" "application.hpp"
                 "tetris/tetris.cpp" "tetris/tetris.hpp"
                 "utils/vector2.hpp"
                 "tetromino/tetromino.cpp" "tetromino/tetrominos.hpp"

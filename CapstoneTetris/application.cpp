@@ -1,9 +1,9 @@
-#include "game.hpp"
+#include "application.hpp"
 #include "log.hpp"
 
-Game* Game::instance_ptr = nullptr;
+Application* Application::instance_ptr = nullptr;
 
-Game::Game()
+Application::Application()
 {
     LOG("Init SDL...");
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -50,7 +50,7 @@ Game::Game()
     return;
 }
 
-Game::~Game()
+Application::~Application()
 {
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
@@ -58,14 +58,14 @@ Game::~Game()
     return;
 }
 
-bool Game::GetRunning() { return this->running; }
+bool Application::GetRunning() { return this->running; }
 
-void Game::SetRunning(bool new_value)
+void Application::SetRunning(bool new_value)
 {
     this->running = new_value;
     return;
 }
 
-void Game::Update() {}
+void Application::Update() {}
 
-void Game::Render() {}
+void Application::Render() {}

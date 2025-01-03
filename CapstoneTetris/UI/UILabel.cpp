@@ -1,6 +1,7 @@
 #include "UILabel.hpp"
 #include "SDL_render.h"
 #include "SDL_surface.h"
+#include "../log.hpp"
 
 UILabel::UILabel(int x, int y, TTF_Font* font, std::string text,
                  SDL_Color color, SDL_Renderer* renderer)
@@ -56,6 +57,12 @@ void UILabel::RedrawTexture(SDL_Renderer* renderer)
     }
 
     this->surface = TTF_RenderText_Solid(font, text.c_str(), color);
+
+    if (!this->surface)
+    {
+        LOG("Surface was unable to be created because: %s", TTF_GetError());
+        return;
+    }
 
     SDL_Rect label_rect = {this->position.x, this->position.y, this->surface->w,
                            this->surface->h};

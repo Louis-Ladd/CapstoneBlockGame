@@ -21,7 +21,7 @@
 
 int main(int argc, char* argv[])
 {
-    Game* game = Game::GetInstance();
+    Application* game = Application::GetInstance();
 
     RunMainMenu(game);
 

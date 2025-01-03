@@ -7,7 +7,7 @@
 
 #define MAX_KEYS 322
 
-class Game;
+class Application;
 
 class GameEventHandler
 {
@@ -19,7 +19,7 @@ private:
 
 public:
     void SetMouseCallback(const std::function<void(SDL_Point)>& callback_func);
-    void HandleEvent(Game* game);
+    void HandleEvent(Application* game);
     bool IsKeyDown(SDL_Keycode key);
     bool ResetKey(SDL_Keycode key);
 };

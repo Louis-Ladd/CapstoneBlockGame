@@ -3,6 +3,7 @@
 #include "UIElement.hpp"
 #include <SDL_ttf.h>
 #include <string>
+#include "../log.hpp"
 
 class UILabel : public UIElement
 {
@@ -33,5 +34,12 @@ public:
         this->RedrawTexture(renderer);
     };
     void HandleClick(SDL_Point click_point) override { return; };
-    int GetTextWidth() { return surface->w; };
+    int GetTextWidth() 
+    { 
+        if (!surface)
+        {
+            LOG("Surface was null?");
+            return 0;
+        }
+        return surface->w; };
 };

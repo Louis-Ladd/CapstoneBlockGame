@@ -27,7 +27,7 @@ public:
     Vector2 GetPosition() const { return this->position; };
     virtual void SetPosition(const Vector2 new_pos) { position = new_pos; };
     virtual void SetEnabled(bool new_value) { enabled = new_value; };
-    bool GetEnabled() { return enabled; }
+    bool GetEnabled() const { return enabled; }
 
 protected:
     Vector2 position = {0, 0};

@@ -7,12 +7,12 @@
 #define SCREEN_HEIGHT 600
 #define SCREEN_WIDTH 800
 
-class Game
+class Application
 {
 private:
-    static Game* instance_ptr;
+    static Application* instance_ptr;
     bool running = true;
-    Game();
+    Application();
     void SetRunning(bool new_value);
 
 public:
@@ -21,15 +21,15 @@ public:
     SDL_Event window_event;
     GameEventHandler event_handler;
     double delta_time = 1;
-    static Game* GetInstance()
+    static Application* GetInstance()
     {
         if (instance_ptr == nullptr)
         {
-            instance_ptr = new Game();
+            instance_ptr = new Application();
         }
         return instance_ptr;
     }
-    ~Game();
+    ~Application();
     bool GetRunning();
     void Quit() { SetRunning(false); };
     void Update();

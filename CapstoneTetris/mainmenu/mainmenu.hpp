@@ -1,14 +1,14 @@
 #pragma once
 
 #include "../UI/UIManager.hpp"
-#include "../game.hpp"
+#include "../application.hpp"
 #include <SDL.h>
 
 class MainMenu
 {
 private:
     bool is_open = true;
-    Game* game;
+    Application* game;
     SDL_Renderer* renderer;
     UIManager ui_manager;
     void BuildMainMenu();
@@ -18,9 +18,9 @@ public:
     void HandleMouseClick(SDL_Point point);
     bool GetIsOpen() { return is_open; };
     void Close() { is_open = false; };
-    MainMenu(Game* game)
+    MainMenu(Application* game)
         : game(game), renderer(game->renderer), ui_manager(renderer) {};
     void Start();
 };
 
-void RunMainMenu(Game* game);
+void RunMainMenu(Application* game);

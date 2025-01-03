@@ -4,12 +4,19 @@
 #include "UIElement.hpp"
 #include "UILabeledButton.hpp"
 #include "UIRect.hpp"
+#include "../application.hpp"
 
 // Sets up all default fonts so the UI elements can access them
 UIManager::UIManager(SDL_Renderer* renderer)
 {
     this->renderer = renderer;
     this->default_fonts[0] = TTF_OpenFont("game_over.ttf", 24);
+    if (this->default_fonts[0] == nullptr)
+    {
+        LOG("Unable to find game_over.ttf");
+        Application::GetInstance()->Quit();
+        return;
+    }
     this->default_fonts[1] = TTF_OpenFont("game_over.ttf", 32);
     this->default_fonts[2] = TTF_OpenFont("game_over.ttf", 64);
     this->default_fonts[3] = TTF_OpenFont("game_over.ttf", 128);

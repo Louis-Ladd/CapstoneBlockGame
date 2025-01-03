@@ -3,7 +3,7 @@
 #include "../log.hpp"
 #include "SDL_render.h"
 
-void RunMainMenu(Game* game)
+void RunMainMenu(Application* game)
 {
     MainMenu* main_menu = new MainMenu(game);
 

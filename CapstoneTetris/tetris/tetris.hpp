@@ -3,7 +3,7 @@
 #include "../UI/UILabel.hpp"
 #include "../UI/UILabeledButton.hpp"
 #include "../UI/UIManager.hpp"
-#include "../game.hpp"
+#include "../application.hpp"
 #include "../tetromino/tetromino.hpp"
 #include "../mainmenu/mainmenu.hpp"
 #include <SDL.h>
@@ -29,7 +29,7 @@ class Tetris
 {
 private:
     Tetris();
-    Game* game;
+    Application* application;
     UIManager ui_manager;
     static Tetris* instance_ptr;
     GameState game_state = Paused;
