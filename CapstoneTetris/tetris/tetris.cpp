@@ -10,7 +10,8 @@ Tetris* Tetris::instance_ptr = nullptr;
 #define BLOCK_OFFSET_X 150
 #define BLOCK_OFFSET_Y 25
 
-// This is a very busy function and hard to read, All it does is instantiates a bunch of UI elements and adds them to the uimanager
+// This is a very busy function and hard to read, All it does is instantiates a
+// bunch of UI elements and adds them to the uimanager
 void Tetris::BuildUI()
 {
     // We create and add all of the UI elements to our ui_manager. The
@@ -56,9 +57,10 @@ void Tetris::BuildUI()
         {(SCREEN_WIDTH / 2) - (high_score_label->GetTextWidth() / 2), 150});
     high_score_label->SetEnabled(false);
 
-    UILabeledButton* continue_button = new UILabeledButton(
-        (SCREEN_WIDTH / 2) - 450 / 2, 250, 450, 100, white, dark_cyan,
-        this->ui_manager.GetDefaultFont(3), this->application->renderer, "Retry");
+    UILabeledButton* continue_button =
+        new UILabeledButton((SCREEN_WIDTH / 2) - 450 / 2, 250, 450, 100, white,
+                            dark_cyan, this->ui_manager.GetDefaultFont(3),
+                            this->application->renderer, "Retry");
     continue_button->SetEnabled(false);
     // Set the buttons OnClick function to an lambda expression with a reference
     // to this tetris object so that we can mutate our game state later on.
@@ -88,9 +90,10 @@ void Tetris::BuildUI()
                 [this](SDL_Point point) { HandleMouseClick(point); });
         });
 
-    UILabeledButton* quit_button = new UILabeledButton(
-        (SCREEN_WIDTH / 2) - 50 / 2, 568, 50, 20, white, red,
-        this->ui_manager.GetDefaultFont(1), this->application->renderer, "Quit");
+    UILabeledButton* quit_button =
+        new UILabeledButton((SCREEN_WIDTH / 2) - 50 / 2, 568, 50, 20, white,
+                            red, this->ui_manager.GetDefaultFont(1),
+                            this->application->renderer, "Quit");
     quit_button->SetEnabled(false);
     quit_button->button->SetOnClickFunction([this](void)
                                             { this->application->Quit(); });
@@ -116,7 +119,9 @@ void Tetris::HandleMouseClick(SDL_Point point)
 }
 
 // Sets up Tetris board and tees up the blocks to be dropped.
-Tetris::Tetris() : application(Application::GetInstance()), ui_manager(this->application->renderer)
+Tetris::Tetris()
+    : application(Application::GetInstance()),
+      ui_manager(this->application->renderer)
 {
     this->BuildUI();
 
