@@ -7,8 +7,8 @@
 // Build Notes!
 // This requires SDL.dll and SDL_ttf.dll on windows
 // to be in the same directory as the executable.
-// Fonts won't work if "game_over.ttf" isn't in the same directoy that you're
-// executing from.
+// Fonts won't work if "game_over.ttf" isn't in the same directoy that
+// you're executing from.
 //
 // Concepts implemented:
 // Abstract Classes (Tetromino, UIElement)
@@ -21,37 +21,42 @@
 
 int main(int argc, char* argv[])
 {
-    Application* game = Application::GetInstance();
+    Application* application = Application::GetInstance();
 
-    RunMainMenu(game);
+    RunMainMenu(application);
 
-    Tetris* tetris = Tetris::GetInstance();
+    if (!application->GetRunning())
+    {
+        return 0;
+    }
+
+    Tetris tetris = Tetris();
 
     Uint32 last_frame_time = SDL_GetTicks();
 
-    while (game->GetRunning())
+    while (application->GetRunning())
     {
 
-        // Calculates delta time so that we can calculate things independently from the
-        // frame rate.
+        // Calculates delta time so that we can calculate things independently
+        // from the frame rate.
         Uint32 current_frame_time = SDL_GetTicks();
-        game->delta_time = (current_frame_time - last_frame_time) / 1000.0f;
+        application->delta_time =
+            (current_frame_time - last_frame_time) / 1000.0f;
         last_frame_time = current_frame_time;
 
         // Background Color
-        SDL_SetRenderDrawColor(game->renderer, 0, 0, 128, 0);
-        SDL_RenderClear(game->renderer);
+        SDL_SetRenderDrawColor(application->renderer, 0, 0, 128, 0);
+        SDL_RenderClear(application->renderer);
 
-        game->event_handler.HandleEvent(game);
+        application->event_handler.HandleEvent(application);
 
-        tetris->Update();
-        tetris->Render(game->renderer);
+        tetris.Update();
+        tetris.Render(application->renderer);
 
         // Flips our double buffer
-        SDL_RenderPresent(game->renderer);
+        SDL_RenderPresent(application->renderer);
     }
 
-    delete game;
-    delete tetris;
+    delete application;
     return 0;
 }

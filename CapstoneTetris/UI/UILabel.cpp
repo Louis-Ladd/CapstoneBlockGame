@@ -1,7 +1,7 @@
 #include "UILabel.hpp"
+#include "../log.hpp"
 #include "SDL_render.h"
 #include "SDL_surface.h"
-#include "../log.hpp"
 
 UILabel::UILabel(int x, int y, TTF_Font* font, std::string text,
                  SDL_Color color, SDL_Renderer* renderer)
@@ -18,6 +18,7 @@ UILabel::UILabel(int x, int y, TTF_Font* font, std::string text,
 // We have ownership of SDL textures and surfaces so we must free them.
 UILabel::~UILabel()
 {
+    LOG("%p", this->surface);
     if (this->texture != nullptr)
     {
         SDL_DestroyTexture(this->texture);
@@ -26,7 +27,7 @@ UILabel::~UILabel()
     if (this->surface != nullptr)
     {
         SDL_FreeSurface(this->surface);
-        this->texture = nullptr;
+        this->surface = nullptr;
     }
 }
 

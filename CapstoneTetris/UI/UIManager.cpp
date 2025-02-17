@@ -1,10 +1,11 @@
 #include "UIManager.hpp"
+#include "../application.hpp"
 #include "../log.hpp"
 #include "UIButton.hpp"
 #include "UIElement.hpp"
 #include "UILabeledButton.hpp"
 #include "UIRect.hpp"
-#include "../application.hpp"
+#include "iostream"
 
 // Sets up all default fonts so the UI elements can access them
 UIManager::UIManager(SDL_Renderer* renderer)
@@ -34,7 +35,11 @@ UIManager::~UIManager()
 
     for (auto& [name, element] : this->elements)
     {
-        delete element;
+        std::cout << "Deleting: " << name << std::endl;
+        if (element != NULL)
+        {
+            delete element;
+        }
     }
     this->elements.clear();
 

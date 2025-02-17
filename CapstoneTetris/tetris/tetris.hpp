@@ -4,13 +4,15 @@
 #include "../UI/UILabeledButton.hpp"
 #include "../UI/UIManager.hpp"
 #include "../application.hpp"
-#include "../tetromino/tetromino.hpp"
 #include "../mainmenu/mainmenu.hpp"
+#include "../tetromino/tetromino.hpp"
 #include <SDL.h>
 #include <SDL_keycode.h>
 #include <SDL_timer.h>
+#include <iostream>
 #include <math.h>
 #include <numeric>
+#include <ostream>
 #include <queue>
 
 // Standard tetris board is 10 wide and 20 high
@@ -28,7 +30,6 @@ enum GameState
 class Tetris
 {
 private:
-    Tetris();
     Application* application;
     UIManager ui_manager;
     static Tetris* instance_ptr;
@@ -54,20 +55,9 @@ private:
     void HandleMouseClick(SDL_Point point);
     void SetGameState(GameState new_state) { game_state = new_state; };
     void BuildUI();
-public:
-    // Singleton, we only have one tetris instance ever so we can make it easier
-    // to access it globaly with this function. if the instance doesn't exist.
-    // creates it.
-    static Tetris* GetInstance()
-    {
-        if (instance_ptr == nullptr)
-        {
-            instance_ptr = new Tetris();
-        }
 
-        return instance_ptr;
-    }
-    ~Tetris();
+public:
+    Tetris();
     void NextBlock();
     void AddBlock(Tetromino tetromino);
     void Update();

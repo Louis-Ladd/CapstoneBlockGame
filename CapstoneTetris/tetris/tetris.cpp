@@ -100,10 +100,10 @@ void Tetris::BuildUI()
 
     this->ui_manager.AddUIElement("ExitToMainMenuButton",
                                   exit_to_main_menu_button);
-    this->ui_manager.AddUIElement("QuitButton", quit_button);
     this->ui_manager.AddUIElement("GameOverLabel", game_over_label);
     this->ui_manager.AddUIElement("HighScoreLabel", high_score_label);
     this->ui_manager.AddUIElement("ContinueButton", continue_button);
+    this->ui_manager.AddUIElement("QuitButton", quit_button);
 
     // Should be NULL if nothing else is using it.
     // Since we have execution, we use our click handler.
@@ -145,7 +145,7 @@ Tetris::Tetris()
     this->SetGameState(GameState::Running);
 }
 
-Tetris::~Tetris() { this->application = nullptr; }
+// Tetris::~Tetris() { this->application = nullptr; }
 
 // Set the SDL draw color, this is inlined as we call it a lot in loops
 // because we don't want to jump to it constantly just for one function call.

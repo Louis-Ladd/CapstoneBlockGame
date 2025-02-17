@@ -5,11 +5,9 @@
 
 void RunMainMenu(Application* game)
 {
-    MainMenu* main_menu = new MainMenu(game);
+    MainMenu main_menu = MainMenu(game);
 
-    main_menu->Start();
-
-    delete main_menu;
+    main_menu.Start();
 }
 
 MainMenu::~MainMenu() { this->game->event_handler.SetMouseCallback(nullptr); }
