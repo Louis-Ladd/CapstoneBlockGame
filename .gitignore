@@ -398,10 +398,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-CapstoneTetris/CMakeFiles/*
+src/CMakeFiles/*
 CMakeFiles/*
 CMakeCache.txt
-CapstoneTetris/CapstoneTetris
-CapstoneTetris/Makefile
+src/CapstoneTetris
+src/Makefile
 Make[Ff]ile
 *.cmake

@@ -11,7 +11,7 @@ endif()
 
 set(CMAKE_BUILD_TYPE Debug)
 
-project ("CapstoneTetris")
+project ("CapstoneBlockGame")
 
 # Include sub-projects.
-add_subdirectory ("CapstoneTetris")
+add_subdirectory ("src")
