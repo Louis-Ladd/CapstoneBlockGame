@@ -25,11 +25,6 @@ int main(int argc, char* argv[])
 
     RunMainMenu(application);
 
-    if (!application->GetRunning())
-    {
-        return 0;
-    }
-
     Tetris tetris = Tetris();
 
     Uint32 last_frame_time = SDL_GetTicks();

@@ -35,8 +35,7 @@ UIManager::~UIManager()
 
     for (auto& [name, element] : this->elements)
     {
-        std::cout << "Deleting: " << name << std::endl;
-        if (element != NULL)
+        if (element != nullptr)
         {
             delete element;
         }
@@ -67,9 +66,9 @@ void UIManager::InvokeClickEvents(SDL_Point mouse_point)
 
 void UIManager::Render()
 {
-    // This is polymorphism at work, all UIElements need to be rendered but we
-    // don't care about that. We just need to render them and the elements will
-    // change behavior as needed.
+    // This is polymorphism at work, all UIElements need to be rendered
+    // differently but we don't care about that. We just need to render them and
+    // the elements will change behavior as needed.
     for (auto& [name, element] : this->elements)
     {
         element->Render(renderer);

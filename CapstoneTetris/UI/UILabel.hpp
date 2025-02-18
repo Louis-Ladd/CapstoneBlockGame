@@ -1,9 +1,9 @@
 #pragma once
 
+#include "../log.hpp"
 #include "UIElement.hpp"
 #include <SDL_ttf.h>
 #include <string>
-#include "../log.hpp"
 
 class UILabel : public UIElement
 {
@@ -11,9 +11,9 @@ private:
     std::string text = "";
     SDL_Color color;
     TTF_Font* font = nullptr;
-    SDL_Surface* surface = nullptr;
     SDL_Texture* texture = nullptr;
     SDL_Rect rect;
+    int w = 0;
 
 public:
     UIElementType GetType() const override { return UIElementType::Label; };
@@ -34,12 +34,5 @@ public:
         this->RedrawTexture(renderer);
     };
     void HandleClick(SDL_Point click_point) override { return; };
-    int GetTextWidth() 
-    { 
-        if (!surface)
-        {
-            LOG("Surface was null?");
-            return 0;
-        }
-        return surface->w; };
+    int GetTextWidth() { return this->w; };
 };

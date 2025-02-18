@@ -18,16 +18,10 @@ UILabel::UILabel(int x, int y, TTF_Font* font, std::string text,
 // We have ownership of SDL textures and surfaces so we must free them.
 UILabel::~UILabel()
 {
-    LOG("%p", this->surface);
-    if (this->texture != nullptr)
+    if (this->texture)
     {
         SDL_DestroyTexture(this->texture);
         this->texture = nullptr;
-    }
-    if (this->surface != nullptr)
-    {
-        SDL_FreeSurface(this->surface);
-        this->surface = nullptr;
     }
 }
 
@@ -45,29 +39,27 @@ void UILabel::Render(SDL_Renderer* renderer)
 // Thus, the texture has to be redrawn for new text or colors
 void UILabel::RedrawTexture(SDL_Renderer* renderer)
 {
-    if (this->surface != nullptr)
-    {
-        SDL_FreeSurface(this->surface);
-        this->surface = nullptr;
-    }
-
-    if (this->texture != nullptr)
+    if (this->texture)
     {
         SDL_DestroyTexture(this->texture);
-        this->surface = nullptr;
+        this->texture = nullptr;
     }
 
-    this->surface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
 
-    if (!this->surface)
+    if (!surface)
     {
         LOG("Surface was unable to be created because: %s", TTF_GetError());
         return;
     }
 
-    SDL_Rect label_rect = {this->position.x, this->position.y, this->surface->w,
-                           this->surface->h};
+    this->w = surface->w;
+
+    SDL_Rect label_rect = {this->position.x, this->position.y, surface->w,
+                           surface->h};
     this->rect = label_rect;
 
-    this->texture = SDL_CreateTextureFromSurface(renderer, this->surface);
+    this->texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_FreeSurface(surface);
 }
