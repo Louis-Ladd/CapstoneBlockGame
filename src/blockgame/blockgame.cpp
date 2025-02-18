@@ -10,7 +10,7 @@
 
 // This is a very busy function and hard to read, All it does is instantiates a
 // bunch of UI elements and adds them to the uimanager
-void Tetris::BuildUI()
+void BlockGame::BuildUI()
 {
     // We create and add all of the UI elements to our ui_manager. The
     // ui_manager now has ownership and must free them.
@@ -111,13 +111,13 @@ void Tetris::BuildUI()
 
 // This is our callback function that we give the event handler
 // This function is called whenever the mouse is clicked.
-void Tetris::HandleMouseClick(SDL_Point point)
+void BlockGame::HandleMouseClick(SDL_Point point)
 {
     this->ui_manager.InvokeClickEvents(point);
 }
 
-// Sets up Tetris board and tees up the blocks to be dropped.
-Tetris::Tetris()
+// Sets up BlockGame board and tees up the blocks to be dropped.
+BlockGame::BlockGame()
     : application(Application::GetInstance()),
       ui_manager(this->application->renderer)
 {
@@ -137,17 +137,17 @@ Tetris::Tetris()
 
     if (this->application == nullptr)
     {
-        LOG("Tetris couldn't find game insance");
+        LOG("BlockGame couldn't find game insance");
     }
 
     this->SetGameState(GameState::Running);
 }
 
-// Tetris::~Tetris() { this->application = nullptr; }
+// BlockGame::~BlockGame() { this->application = nullptr; }
 
 // Set the SDL draw color, this is inlined as we call it a lot in loops
 // because we don't want to jump to it constantly just for one function call.
-inline void Tetris::SetDrawColor(int block_state, Uint8 tint)
+inline void BlockGame::SetDrawColor(int block_state, Uint8 tint)
 {
     SDL_Renderer* renderer = this->application->renderer;
     switch (block_state)
@@ -188,11 +188,11 @@ inline void Tetris::SetDrawColor(int block_state, Uint8 tint)
     }
 }
 
-void Tetris::ResetGraceTimer() { this->block_drop_grace = 0.3; }
+void BlockGame::ResetGraceTimer() { this->block_drop_grace = 0.3; }
 
 // Add this block to the board and set other various things that the next block
 // will use.
-void Tetris::DropCurrentBlock()
+void BlockGame::DropCurrentBlock()
 {
     this->AddBlock(this->current_block);
     this->NextBlock();
@@ -201,7 +201,7 @@ void Tetris::DropCurrentBlock()
 }
 
 // This is called every frame, this is meant to handle only logic.
-void Tetris::Update()
+void BlockGame::Update()
 {
     if (this->game_state == GameState::Paused)
     {
@@ -308,7 +308,7 @@ void Tetris::Update()
 
 // This is called every frame, this is only meant to handle drawing and
 // rendering.
-void Tetris::Render(SDL_Renderer* renderer)
+void BlockGame::Render(SDL_Renderer* renderer)
 {
     if (this->game_state == GameState::Lost)
     {
@@ -411,7 +411,7 @@ void Tetris::Render(SDL_Renderer* renderer)
     this->ui_manager.Render();
 }
 
-void Tetris::NextBlock()
+void BlockGame::NextBlock()
 {
     current_block = block_queue.front();
     block_queue.pop();
@@ -421,7 +421,7 @@ void Tetris::NextBlock()
 }
 
 // Updates the board state with a given tetromino
-void Tetris::AddBlock(Tetromino tetromino)
+void BlockGame::AddBlock(Tetromino tetromino)
 {
     for (int i = 0; i < 4; i++)
     {
@@ -438,7 +438,7 @@ void Tetris::AddBlock(Tetromino tetromino)
 }
 
 // Checks what level we should be right now and then update the level label
-void Tetris::UpdateLevel()
+void BlockGame::UpdateLevel()
 {
     if (this->lines % 10 == 0 && this->lines != 0)
     {
@@ -451,7 +451,7 @@ void Tetris::UpdateLevel()
 }
 
 // Update the score label.
-void Tetris::UpdateScore()
+void BlockGame::UpdateScore()
 {
     UILabel* score_label =
         static_cast<UILabel*>(this->ui_manager.GetUIElement("Score"));
@@ -461,7 +461,7 @@ void Tetris::UpdateScore()
 
 // Check the board for lines, game over if topped out.
 // Updates score according to how many lines were cleared.
-void Tetris::UpdateClearedLines()
+void BlockGame::UpdateClearedLines()
 {
     // Check if any block occupies the top of the board.
     // Game over if so.
@@ -488,7 +488,7 @@ void Tetris::UpdateClearedLines()
             for (int col = 0; col < BOARD_WIDTH; col++)
             {
                 board[row][col] = 0;
-                Tetris::Render(this->application->renderer);
+                BlockGame::Render(this->application->renderer);
                 SDL_RenderPresent(this->application->renderer);
                 SDL_Delay(15);
             }
@@ -542,13 +542,13 @@ void Tetris::UpdateClearedLines()
     this->UpdateScore();
 }
 
-void Tetris::SetGameUIElements(bool enabled)
+void BlockGame::SetGameUIElements(bool enabled)
 {
     this->ui_manager.GetUIElement("Level")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("Score")->SetEnabled(enabled);
 }
 
-void Tetris::SetGameOverUIElements(bool enabled)
+void BlockGame::SetGameOverUIElements(bool enabled)
 {
     this->ui_manager.GetUIElement("GameOverLabel")->SetEnabled(enabled);
     this->ui_manager.GetUIElement("HighScoreLabel")->SetEnabled(enabled);
@@ -557,10 +557,10 @@ void Tetris::SetGameOverUIElements(bool enabled)
     this->ui_manager.GetUIElement("QuitButton")->SetEnabled(enabled);
 }
 
-void Tetris::ResetBoard() { memset(board, 0, sizeof(this->board)); }
+void BlockGame::ResetBoard() { memset(board, 0, sizeof(this->board)); }
 
 // Set all game state back to a starting point
-void Tetris::ResetGame()
+void BlockGame::ResetGame()
 {
     this->ResetBoard();
     this->level = 1;
@@ -576,4 +576,4 @@ void Tetris::ResetGame()
     }
 }
 
-Uint8 (*Tetris::GetBoard())[BOARD_WIDTH] { return this->board; }
+Uint8 (*BlockGame::GetBoard())[BOARD_WIDTH] { return this->board; }

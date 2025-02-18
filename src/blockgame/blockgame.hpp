@@ -27,12 +27,11 @@ enum GameState
     Quit,
 };
 
-class Tetris
+class BlockGame
 {
 private:
     Application* application;
     UIManager ui_manager;
-    static Tetris* instance_ptr;
     GameState game_state = Paused;
     // Board is specifically defined as an 8 bit integer to make the board more
     // efficent memory wise.
@@ -57,7 +56,7 @@ private:
     void BuildUI();
 
 public:
-    Tetris();
+    BlockGame();
     void NextBlock();
     void AddBlock(Tetromino tetromino);
     void Update();

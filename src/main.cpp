@@ -15,7 +15,7 @@
 // Polymorphism (UIElement and UIManager)
 // Inheritance (Tetrominos, UIElement)
 // Map Data Structures (UIManager)
-// Matrixies (Tetris Board, Tetromino.cpp)
+// Matrixies (BlockGame Board, Tetromino.cpp)
 
 #include "main.hpp"
 
@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 
     RunMainMenu(application);
 
-    Tetris tetris = Tetris();
+    BlockGame tetris = BlockGame();
 
     Uint32 last_frame_time = SDL_GetTicks();
 
