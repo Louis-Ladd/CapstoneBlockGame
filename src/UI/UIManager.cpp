@@ -1,11 +1,6 @@
 #include "UIManager.hpp"
 #include "../application.hpp"
 #include "../log.hpp"
-#include "UIButton.hpp"
-#include "UIElement.hpp"
-#include "UILabeledButton.hpp"
-#include "UIRect.hpp"
-#include "iostream"
 
 // Sets up all default fonts so the UI elements can access them
 UIManager::UIManager(SDL_Renderer* renderer)

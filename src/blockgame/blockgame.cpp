@@ -1,7 +1,9 @@
 #include "blockgame.hpp"
+#include "../UI/UILabel.hpp"
+#include "../UI/UILabeledButton.hpp"
 #include "../log.hpp"
-#include "SDL_keycode.h"
-#include "SDL_timer.h"
+#include "../mainmenu/mainmenu.hpp"
+#include <numeric>
 #include <string>
 
 #define BLOCK_SIZE 27

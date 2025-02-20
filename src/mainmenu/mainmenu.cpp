@@ -1,6 +1,5 @@
 #include "mainmenu.hpp"
 #include "../UI/UILabeledButton.hpp"
-#include "../log.hpp"
 #include "SDL_render.h"
 
 void RunMainMenu(Application* game)
@@ -47,6 +46,7 @@ void MainMenu::HandleMouseClick(SDL_Point point)
     this->ui_manager.InvokeClickEvents(point);
 }
 
+// Start takes responsibility as a new "main loop"
 void MainMenu::Start()
 {
     BuildMainMenu();

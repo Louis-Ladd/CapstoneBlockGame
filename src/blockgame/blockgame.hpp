@@ -1,21 +1,15 @@
 #pragma once
 
-#include "../UI/UILabel.hpp"
-#include "../UI/UILabeledButton.hpp"
 #include "../UI/UIManager.hpp"
 #include "../application.hpp"
-#include "../mainmenu/mainmenu.hpp"
 #include "../tetromino/tetromino.hpp"
 #include <SDL.h>
 #include <SDL_keycode.h>
 #include <SDL_timer.h>
-#include <iostream>
 #include <math.h>
-#include <numeric>
-#include <ostream>
 #include <queue>
 
-// Standard tetris board is 10 wide and 20 high
+// Standard blockgame board is 10 wide and 20 high
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
 

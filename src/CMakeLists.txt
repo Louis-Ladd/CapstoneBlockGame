@@ -23,7 +23,7 @@ endif()
 
 # Add source to this project's executable.
 add_executable (CapstoneBlockGame
-                "main.cpp" "main.hpp"
+                "main.cpp"
                 "application.cpp" "application.hpp"
                 "blockgame/blockgame.cpp" "blockgame/blockgame.hpp"
                 "utils/vector2.hpp"

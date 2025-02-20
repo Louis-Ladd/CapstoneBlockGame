@@ -17,7 +17,9 @@
 // Map Data Structures (UIManager)
 // Matrixies (BlockGame Board, Tetromino.cpp)
 
-#include "main.hpp"
+#include "blockgame/blockgame.hpp"
+#include "mainmenu/mainmenu.hpp"
+#include <SDL.h>
 
 int main(int argc, char* argv[])
 {
