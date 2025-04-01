@@ -15,7 +15,7 @@ Application::Application()
     }
 
     LOG("Creating window...");
-    this->window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_CENTERED,
+    this->window = SDL_CreateWindow("Block Game", SDL_WINDOWPOS_CENTERED,
                                     SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,
                                     SCREEN_HEIGHT, 0);
 

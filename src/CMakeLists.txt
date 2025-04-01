@@ -1,4 +1,4 @@
-﻿# CMakeList.txt : CMake project for CapstoneTetris, include source and define
+﻿# CMakeList.txt : CMake project for CapstoneBlockGame, include source and define
 # project specific logic here.
 #
 

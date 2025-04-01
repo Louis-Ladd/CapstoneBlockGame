@@ -62,8 +62,9 @@ void BlockGame::BuildUI()
                             dark_cyan, this->ui_manager.GetDefaultFont(3),
                             this->application->renderer, "Retry");
     continue_button->SetEnabled(false);
-    // Set the buttons OnClick function to an lambda expression with a reference
-    // to this tetris object so that we can mutate our game state later on.
+
+    // Set the buttons OnClick function to a lambda expression with a reference
+    // to this game object so that we can mutate our game state later on.
     continue_button->button->SetOnClickFunction(
         [this](void)
         {

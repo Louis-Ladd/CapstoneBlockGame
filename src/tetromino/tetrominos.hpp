@@ -11,7 +11,7 @@
 // This is an example of inheritance and abstract classes. They all inherit from
 // the base class tetromino that sets up basic things like position, rotation
 // that are applicable to all shapes and these shape classes are the actual
-// objects that we use in tetris.
+// objects that we use in BlockGame.
 
 class IShape : public Tetromino
 {

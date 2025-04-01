@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
     RunMainMenu(application);
 
-    BlockGame tetris = BlockGame();
+    BlockGame block_game = BlockGame();
 
     Uint32 last_frame_time = SDL_GetTicks();
 
@@ -47,8 +47,8 @@ int main(int argc, char* argv[])
 
         application->event_handler.HandleEvent(application);
 
-        tetris.Update();
-        tetris.Render(application->renderer);
+        block_game.Update();
+        block_game.Render(application->renderer);
 
         // Flips our double buffer
         SDL_RenderPresent(application->renderer);
