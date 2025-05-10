@@ -1,6 +1,6 @@
 #include "UIButton.hpp"
 #include "../log.hpp"
-#include "SDL_rect.h"
+#include <SDL2/SDL_rect.h>
 
 void UIButton::SetOnClickFunction(std::function<void(void)> func)
 {

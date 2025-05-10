@@ -1,6 +1,7 @@
 #include "gameeventhandler.hpp"
 #include "application.hpp"
-#include <SDL_keycode.h>
+#include "log.hpp"
+#include <SDL2/SDL_keycode.h>
 
 void GameEventHandler::SetMouseCallback(
     const std::function<void(SDL_Point)>& callback_func)
@@ -23,9 +24,11 @@ void GameEventHandler::UpdatePressedKeys(SDL_Event event)
     {
         case SDL_KEYDOWN:
             this->keys[keycode] = true;
+            LOG("Keycode %i is down", keycode);
             break;
         case SDL_KEYUP:
             this->keys[keycode] = false;
+            LOG("Keycode %i is up", keycode);
             break;
     }
 }

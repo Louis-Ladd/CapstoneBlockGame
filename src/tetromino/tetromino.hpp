@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../utils/vector2.hpp"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <algorithm>
 
 #define BOARD_HEIGHT 20

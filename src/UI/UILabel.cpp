@@ -1,7 +1,7 @@
 #include "UILabel.hpp"
 #include "../log.hpp"
-#include "SDL_render.h"
-#include "SDL_surface.h"
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_surface.h>
 
 UILabel::UILabel(int x, int y, TTF_Font* font, std::string text,
                  SDL_Color color, SDL_Renderer* renderer)

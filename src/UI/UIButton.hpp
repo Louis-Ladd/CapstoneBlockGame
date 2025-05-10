@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UIRect.hpp"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <functional>
 
 class UIButton : public UIRect

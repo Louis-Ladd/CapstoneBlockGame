@@ -3,9 +3,9 @@
 #include "../UI/UIManager.hpp"
 #include "../application.hpp"
 #include "../tetromino/tetromino.hpp"
-#include <SDL.h>
-#include <SDL_keycode.h>
-#include <SDL_timer.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_timer.h>
 #include <math.h>
 #include <queue>
 

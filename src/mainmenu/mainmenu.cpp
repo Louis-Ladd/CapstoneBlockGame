@@ -1,6 +1,6 @@
 #include "mainmenu.hpp"
 #include "../UI/UILabeledButton.hpp"
-#include "SDL_render.h"
+#include <SDL2/SDL_render.h>
 
 void RunMainMenu(Application* game)
 {

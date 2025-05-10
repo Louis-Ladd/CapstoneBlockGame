@@ -19,7 +19,7 @@
 
 #include "blockgame/blockgame.hpp"
 #include "mainmenu/mainmenu.hpp"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 int main(int argc, char* argv[])
 {

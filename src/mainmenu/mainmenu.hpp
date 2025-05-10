@@ -2,7 +2,7 @@
 
 #include "../UI/UIManager.hpp"
 #include "../application.hpp"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 class MainMenu
 {
